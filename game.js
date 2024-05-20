@@ -162,7 +162,7 @@ function retryGame() {
 
 function doneGame() {
     // You can add additional actions here if needed
-    alert('Game Over! Thank you for playing!');
+    alert('Thank you for playing!');
 }
 
 startGame();
