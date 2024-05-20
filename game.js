@@ -132,7 +132,7 @@ function startGame() {
     }, speedIncrementInterval);
 
     // Spawn a new block every second
-    blockSpawnInterval = setInterval(spawnBlock, 1000);
+    blockSpawnInterval = setInterval(spawnBlock, 200);
 
     // Update the score every second
     scoreInterval = setInterval(() => {
