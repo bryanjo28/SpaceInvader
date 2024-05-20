@@ -20,6 +20,9 @@ let speedIncrementInterval = 5000; // Increase speed every 5 seconds
 let speedIncrementAmount = canvas.height * 0.0005; // Increment amount proportional to canvas height
 
 let score = 0;
+let scoreInterval;
+let blockSpawnInterval;
+let speedIncrement;
 
 function updateFingerPosition(x, y) {
     fingerX = x;
@@ -49,8 +52,7 @@ function update() {
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     if (distance < dotRadius) {
-        gameOver = true;
-        alert(`Game Over! Your score: ${score}`);
+        endGame();
         return;
     }
 
@@ -68,8 +70,7 @@ function update() {
             fingerY > block.y &&
             fingerY < block.y + blockHeight
         ) {
-            gameOver = true;
-            alert(`Game Over! Your score: ${score}`);
+            endGame();
             return;
         }
     }
@@ -109,21 +110,51 @@ function draw() {
     ctx.fillText(`Score: ${score}`, canvas.width - 10, 30);
 }
 
-// Increase the speed of the dot over time
-setInterval(() => {
-    dotSpeed += speedIncrementAmount;
-    blockSpeed += speedIncrementAmount;
-}, speedIncrementInterval);
+function startGame() {
+    gameOver = false;
+    dotX = 20;
+    dotY = 20;
+    fingerX = canvas.width / 2;
+    fingerY = canvas.height / 2;
+    dotSpeed = canvas.height * 0.005;
+    blockSpeed = canvas.height * 0.005;
+    score = 0;
+    blocks = [];
+    
+    document.getElementById('retryButton').style.display = 'none';
+    document.getElementById('doneButton').style.display = 'none';
 
-// Spawn a new block every second
-const blockSpawnInterval = 300;
-setInterval(spawnBlock, blockSpawnInterval);
+    // Increase the speed of the dot over time
+    speedIncrement = setInterval(() => {
+        dotSpeed += speedIncrementAmount;
+        blockSpeed += speedIncrementAmount;
+    }, speedIncrementInterval);
 
-// Update the score every second
-setInterval(() => {
-    if (!gameOver) {
-        score++;
-    }
-}, 1000);
+    // Spawn a new block every second
+    blockSpawnInterval = setInterval(spawnBlock, 500);
 
-update();
+    // Update the score every second
+    scoreInterval = setInterval(() => {
+        if (!gameOver) {
+            score++;
+        }
+    }, 1000);
+
+    update();
+}
+
+function endGame() {
+    gameOver = true;
+    clearInterval(speedIncrement);
+    clearInterval(blockSpawnInterval);
+    clearInterval(scoreInterval);
+
+    document.getElementById('retryButton').style.display = 'block';
+    document.getElementById('doneButton').style.display = 'block';
+}
+
+function retryGame() {
+    startGame();
+}
+
+startGame();
