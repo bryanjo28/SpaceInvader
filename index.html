@@ -27,18 +27,30 @@
         }
         #retryButton {
             top: 50%;
-            left: 45%;
+            left: 35%;
+            transform: translate(-50%, -50%);
         }
         #doneButton {
             top: 50%;
-            left: 55%;
+            left: 65%;
+            transform: translate(-50%, -50%);
+        }
+        #scoreMessage {
+            display: none;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #000000;
         }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
+    <div id="scoreMessage">Your score is: 0</div>
     <button id="retryButton" onclick="retryGame()">Retry</button>
-    <button id="doneButton" onclick="endGame()">Done</button>
+    <button id="doneButton" onclick="doneGame()">Done</button>
     <script src="game.js"></script>
 </body>
 </html>

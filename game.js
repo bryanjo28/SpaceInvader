@@ -123,6 +123,7 @@ function startGame() {
     
     document.getElementById('retryButton').style.display = 'none';
     document.getElementById('doneButton').style.display = 'none';
+    document.getElementById('scoreMessage').style.display = 'none';
 
     // Increase the speed of the dot over time
     speedIncrement = setInterval(() => {
@@ -131,7 +132,7 @@ function startGame() {
     }, speedIncrementInterval);
 
     // Spawn a new block every second
-    blockSpawnInterval = setInterval(spawnBlock, 500);
+    blockSpawnInterval = setInterval(spawnBlock, 1000);
 
     // Update the score every second
     scoreInterval = setInterval(() => {
@@ -149,12 +150,19 @@ function endGame() {
     clearInterval(blockSpawnInterval);
     clearInterval(scoreInterval);
 
+    document.getElementById('scoreMessage').innerText = `Your score is: ${score}`;
+    document.getElementById('scoreMessage').style.display = 'block';
     document.getElementById('retryButton').style.display = 'block';
     document.getElementById('doneButton').style.display = 'block';
 }
 
 function retryGame() {
     startGame();
+}
+
+function doneGame() {
+    // You can add additional actions here if needed
+    alert('Game Over! Thank you for playing!');
 }
 
 startGame();
