@@ -92,12 +92,17 @@ function draw() {
     ctx.fill();
 
     // Draw the falling blocks
-    for (let block of blocks) {
-        ctx.fillStyle = 'red';
-        ctx.fillRect(block.x, block.y, blockWidth, blockHeight);
-    }
+    const brickImage = new Image();
+    brickImage.src = 'brick.png'; // Example brick texture URL
 
-    // Draw the player's finger position (for debug purposes)
+    // Variable to hold the brick pattern
+    let brickPattern;
+
+    // Function to create the brick pattern once the image has loaded
+    brickImage.onload = function() {
+        brickPattern = ctx.createPattern(brickImage, 'repeat');
+    };
+
     ctx.beginPath();
     ctx.arc(fingerX, fingerY, 5, 0, Math.PI * 2, false);
     ctx.fillStyle = 'blue';
@@ -131,10 +136,8 @@ function startGame() {
         blockSpeed += speedIncrementAmount;
     }, speedIncrementInterval);
 
-    // Spawn a new block every second
     blockSpawnInterval = setInterval(spawnBlock, 200);
 
-    // Update the score every second
     scoreInterval = setInterval(() => {
         if (!gameOver) {
             score++;
@@ -161,7 +164,6 @@ function retryGame() {
 }
 
 function doneGame() {
-    // You can add additional actions here if needed
     alert('Thank you for playing!');
 }
 
