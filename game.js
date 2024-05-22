@@ -24,6 +24,19 @@ let scoreInterval;
 let blockSpawnInterval;
 let speedIncrement;
 
+// Load the brick texture image
+const brickImage = new Image();
+brickImage.src = 'brick.png'; // Example brick texture URL
+
+// Variable to hold the brick pattern
+let brickPattern;
+
+brickImage.onload = function() {
+    brickPattern = ctx.createPattern(brickImage, 'repeat');
+    // Start the game only after the image has loaded
+    startGame();
+};
+
 function updateFingerPosition(x, y) {
     fingerX = x;
     fingerY = y;
@@ -91,18 +104,17 @@ function draw() {
     ctx.fillStyle = 'red';
     ctx.fill();
 
-    // Draw the falling blocks
-    const brickImage = new Image();
-    brickImage.src = 'brick.png'; // Example brick texture URL
+    // Draw the falling blocks with brick pattern
+    for (let block of blocks) {
+        if (brickPattern) {
+            ctx.fillStyle = brickPattern;
+        } else {
+            ctx.fillStyle = 'red'; // Fallback color if the pattern is not yet loaded
+        }
+        ctx.fillRect(block.x, block.y, blockWidth, blockHeight);
+    }
 
-    // Variable to hold the brick pattern
-    let brickPattern;
-
-    // Function to create the brick pattern once the image has loaded
-    brickImage.onload = function() {
-        brickPattern = ctx.createPattern(brickImage, 'repeat');
-    };
-
+    // Draw the player's finger position (for debug purposes)
     ctx.beginPath();
     ctx.arc(fingerX, fingerY, 5, 0, Math.PI * 2, false);
     ctx.fillStyle = 'blue';
@@ -167,4 +179,5 @@ function doneGame() {
     alert('Thank you for playing!');
 }
 
-startGame();
+// Don't start the game until the image has loaded
+// startGame();
