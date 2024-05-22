@@ -211,10 +211,10 @@ function endGame() {
     }
 }
 
-// function retryGame() {
-//     document.getElementById('startMessage').style.display = 'block';
-//     endGame();
-// }
+function retryGame() {
+    document.getElementById('startMessage').style.display = 'block';
+    endGame();
+}
 
 function doneGame() {
     alert('Thank you for playing!');
