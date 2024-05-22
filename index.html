@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Don't Get Hit</title>
+    <title>Chase Game</title>
     <style>
         body, html {
             margin: 0;
@@ -27,11 +27,13 @@
             cursor: pointer;
         }
         #startMessage {
-            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             font-size: 24px;
             color: black;
             text-align: center;
-            margin-top: 10px;
         }
         #scoreMessage {
             display: none;
@@ -40,14 +42,21 @@
             text-align: center;
             margin-top: 10px;
         }
+        .buttonContainer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
     <div id="startMessage">Press screen to start the game</div>
     <div id="scoreMessage"></div>
-    <button id="retryButton" onclick="retryGame()">Retry</button>
-    <button id="doneButton" onclick="doneGame()">Done</button>
+    <div class="buttonContainer">
+        <button id="retryButton" onclick="retryGame()">Retry</button>
+        <button id="doneButton" onclick="doneGame()">Done</button>
+    </div>
     <script src="game.js"></script>
 </body>
 </html>
