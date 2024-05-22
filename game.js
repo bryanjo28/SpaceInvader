@@ -201,8 +201,9 @@ function endGame() {
         clearInterval(blockSpawnInterval);
         clearInterval(scoreInterval);
 
-        document.getElementById('scoreMessage').innerText = `Your score is: ${score} \n\n Tap anywhere to retry.... `;
+        document.getElementById('scoreMessage').innerText = `Your score is: ${score}`;
         document.getElementById('scoreMessage').style.display = 'block';
+        document.getElementById('retryButton').style.display = 'block';
         document.getElementById('doneButton').style.display = 'block';
 
         // Re-add the event listeners to start the game
