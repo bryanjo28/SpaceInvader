@@ -26,11 +26,11 @@ let speedIncrement;
 
 // Load the knife texture image
 const knifeImage = new Image();
-knifeImage.src = 'knive.jpg'; // Example knife texture URL
+knifeImage.src = 'knive.png'; // Example knife texture URL
 
 knifeImage.onload = function() {
     // Set block dimensions based on the image dimensions
-    const scale = canvas.width / 10 / knifeImage.width; // Scale to 10% of canvas width
+    const scale = canvas.width / 4 / knifeImage.width; 
     blockWidth = knifeImage.width * scale;
     blockHeight = knifeImage.height * scale;
 
@@ -53,8 +53,28 @@ canvas.addEventListener('mousemove', (event) => {
 });
 
 function spawnBlock() {
-    const blockX = Math.random() * (canvas.width - blockWidth);
-    blocks.push({ x: blockX, y: -blockHeight });
+    let blockX, blockY, overlap;
+
+    do {
+        overlap = false;
+        blockX = Math.random() * (canvas.width - blockWidth);
+        blockY = -blockHeight;
+
+        // Check for overlap with existing blocks
+        for (let block of blocks) {
+            if (
+                blockX < block.x + blockWidth &&
+                blockX + blockWidth > block.x &&
+                blockY < block.y + blockHeight &&
+                blockY + blockHeight > block.y
+            ) {
+                overlap = true;
+                break;
+            }
+        }
+    } while (overlap);
+
+    blocks.push({ x: blockX, y: blockY });
 }
 
 function update() {
