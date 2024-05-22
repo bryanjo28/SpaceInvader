@@ -203,7 +203,6 @@ function endGame() {
 
         document.getElementById('scoreMessage').innerText = `Your score is: ${score} \n\n Tap anywhere to retry.... `;
         document.getElementById('scoreMessage').style.display = 'block';
-        document.getElementById('retryButton').style.display = 'block';
         document.getElementById('doneButton').style.display = 'block';
 
         // Re-add the event listeners to start the game
@@ -212,10 +211,10 @@ function endGame() {
     }
 }
 
-function retryGame() {
-    document.getElementById('startMessage').style.display = 'block';
-    endGame();
-}
+// function retryGame() {
+//     document.getElementById('startMessage').style.display = 'block';
+//     endGame();
+// }
 
 function doneGame() {
     alert('Thank you for playing!');
