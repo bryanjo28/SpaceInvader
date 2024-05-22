@@ -26,11 +26,11 @@ let speedIncrement;
 
 // Load the knife texture image
 const knifeImage = new Image();
-knifeImage.src = 'knife.jpg'; // Example knife texture URL
+knifeImage.src = 'knive.png'; 
 
 knifeImage.onload = function() {
     // Set block dimensions based on the image dimensions
-    const scale = canvas.width / 10 / knifeImage.width; // Scale to 10% of canvas width
+    const scale = canvas.width / 30 / knifeImage.width; // Scale to 10% of canvas width
     blockWidth = knifeImage.width * scale;
     blockHeight = knifeImage.height * scale;
 
@@ -135,10 +135,10 @@ function draw() {
     }
 
     // Draw the player's finger position (for debug purposes)
-    ctx.beginPath();
-    ctx.arc(fingerX, fingerY, 5, 0, Math.PI * 2, false);
-    ctx.fillStyle = 'blue';
-    ctx.fill();
+    // ctx.beginPath();
+    // ctx.arc(fingerX, fingerY, 5, 0, Math.PI * 2, false);
+    // ctx.fillStyle = 'blue';
+    // ctx.fill();
 
     // Draw the score
     ctx.font = '20px Arial';
