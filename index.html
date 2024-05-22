@@ -19,12 +19,6 @@
             background-color: #fff;
             border: 1px solid #000;
         }
-        #retryButton, #doneButton {
-            display: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
         #messageContainer {
             position: absolute;
             top: 50%;
@@ -39,12 +33,6 @@
         }
         #scoreMessage {
             display: none;
-            font-size: 20px;
-        }
-        .buttonContainer {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
         }
     </style>
 </head>
@@ -53,10 +41,6 @@
     <div id="messageContainer">
         <div id="startMessage">Press screen to start the game</div>
         <div id="scoreMessage"></div>
-        <div class="buttonContainer">
-            <button id="retryButton" onclick="retryGame()">Retry</button>
-            <button id="doneButton" onclick="doneGame()">Done</button>
-        </div>
     </div>
     <script src="game.js"></script>
 </body>
