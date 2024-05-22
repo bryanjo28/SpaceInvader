@@ -9,46 +9,43 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            touch-action: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: #f0f0f0;
         }
-        canvas {
-            display: block;
-            background: #f0f0f0;
+        #gameCanvas {
+            background-color: #fff;
+            border: 1px solid #000;
         }
         #retryButton, #doneButton {
             display: none;
-            position: absolute;
+            margin-top: 10px;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            border: none;
-            background-color: #ff0000;
-            color: #ffffff;
         }
-        #retryButton {
-            top: 50%;
-            left: 35%;
-            transform: translate(-50%, -50%);
-        }
-        #doneButton {
-            top: 50%;
-            left: 65%;
-            transform: translate(-50%, -50%);
+        #startMessage {
+            display: block;
+            font-size: 24px;
+            color: black;
+            text-align: center;
+            margin-top: 10px;
         }
         #scoreMessage {
             display: none;
-            position: absolute;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            color: #000000;
+            font-size: 20px;
+            color: black;
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
-    <div id="scoreMessage">Score anda: 0</div>
+    <div id="startMessage">Press screen to start the game</div>
+    <div id="scoreMessage"></div>
     <button id="retryButton" onclick="retryGame()">Retry</button>
     <button id="doneButton" onclick="doneGame()">Done</button>
     <script src="game.js"></script>

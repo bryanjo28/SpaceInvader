@@ -24,11 +24,13 @@ let scoreInterval;
 let blockSpawnInterval;
 let speedIncrement;
 
+// Load the knife texture image
 const knifeImage = new Image();
-knifeImage.src = 'knive.png'; 
+knifeImage.src = 'knive.png'; // Example knife texture URL
 
 knifeImage.onload = function() {
-    const scale = canvas.width / 30 / knifeImage.width; 
+    // Set block dimensions based on the image dimensions
+    const scale = canvas.width / 30 / knifeImage.width; // Scale to 10% of canvas width
     blockWidth = knifeImage.width * scale;
     blockHeight = knifeImage.height * scale;
 
@@ -133,10 +135,10 @@ function draw() {
     }
 
     // Draw the player's finger position (for debug purposes)
-    ctx.beginPath();
-    ctx.arc(fingerX, fingerY, 5, 0, Math.PI * 2, false);
-    ctx.fillStyle = 'blue';
-    ctx.fill();
+    // ctx.beginPath();
+    // ctx.arc(fingerX, fingerY, 5, 0, Math.PI * 2, false);
+    // ctx.fillStyle = 'blue';
+    // ctx.fill();
 
     // Draw the score
     ctx.font = '20px Arial';
@@ -157,6 +159,7 @@ function startGame(event) {
         score = 0;
         blocks = [];
 
+        document.getElementById('startMessage').style.display = 'none';
         document.getElementById('retryButton').style.display = 'none';
         document.getElementById('doneButton').style.display = 'none';
         document.getElementById('scoreMessage').style.display = 'none';
@@ -210,7 +213,8 @@ function endGame() {
 }
 
 function retryGame() {
-    startGame();
+    document.getElementById('startMessage').style.display = 'block';
+    endGame();
 }
 
 function doneGame() {
