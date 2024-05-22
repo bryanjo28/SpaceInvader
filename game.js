@@ -26,7 +26,7 @@ let speedIncrement;
 
 // Load the knife texture image
 const knifeImage = new Image();
-knifeImage.src = 'knife.jpg'; // Example knife texture URL
+knifeImage.src = 'knive.jpg'; // Example knife texture URL
 
 knifeImage.onload = function() {
     // Set block dimensions based on the image dimensions
