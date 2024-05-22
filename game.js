@@ -12,8 +12,8 @@ const dotRadius = 10;
 let gameOver = false;
 
 let blocks = [];
-const blockWidth = canvas.width * 0.05; // 5% of canvas width
-const blockHeight = canvas.height * 0.05; // 5% of canvas height
+let blockWidth; // Will be set based on the knife image dimensions
+let blockHeight; // Will be set based on the knife image dimensions
 let blockSpeed = canvas.height * 0.005; // 0.5% of canvas height
 let dotSpeed = canvas.height * 0.005; // 0.5% of canvas height
 let speedIncrementInterval = 5000; // Increase speed every 5 seconds
@@ -24,15 +24,16 @@ let scoreInterval;
 let blockSpawnInterval;
 let speedIncrement;
 
-// Load the brick texture image
-const brickImage = new Image();
-brickImage.src = 'brick.png'; // Example brick texture URL
+// Load the knife texture image
+const knifeImage = new Image();
+knifeImage.src = 'knife.jpg'; // Example knife texture URL
 
-// Variable to hold the brick pattern
-let brickPattern;
+knifeImage.onload = function() {
+    // Set block dimensions based on the image dimensions
+    const scale = canvas.width / 10 / knifeImage.width; // Scale to 10% of canvas width
+    blockWidth = knifeImage.width * scale;
+    blockHeight = knifeImage.height * scale;
 
-brickImage.onload = function() {
-    brickPattern = ctx.createPattern(brickImage, 'repeat');
     // Start the game only after the image has loaded
     startGame();
 };
@@ -104,14 +105,9 @@ function draw() {
     ctx.fillStyle = 'red';
     ctx.fill();
 
-    // Draw the falling blocks with brick pattern
+    // Draw the falling blocks with knife image
     for (let block of blocks) {
-        if (brickPattern) {
-            ctx.fillStyle = brickPattern;
-        } else {
-            ctx.fillStyle = 'red'; // Fallback color if the pattern is not yet loaded
-        }
-        ctx.fillRect(block.x, block.y, blockWidth, blockHeight);
+        ctx.drawImage(knifeImage, block.x, block.y, blockWidth, blockHeight);
     }
 
     // Draw the player's finger position (for debug purposes)
