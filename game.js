@@ -30,7 +30,7 @@ knifeImage.src = 'knive.png'; // Example knife texture URL
 
 knifeImage.onload = function() {
     // Set block dimensions based on the image dimensions
-    const scale = canvas.width / 4 / knifeImage.width; 
+    const scale = canvas.width / 20 / knifeImage.width; 
     blockWidth = knifeImage.width * scale;
     blockHeight = knifeImage.height * scale;
 
