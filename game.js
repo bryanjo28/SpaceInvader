@@ -9,7 +9,7 @@ let fingerY = canvas.height / 2;
 let dotX = 20;
 let dotY = 20;
 const dotRadius = 10;
-let gameOver = false;
+let gameOver = true; // Start with the game not running
 
 let blocks = [];
 let blockWidth; // Will be set based on the knife image dimensions
@@ -24,18 +24,17 @@ let scoreInterval;
 let blockSpawnInterval;
 let speedIncrement;
 
-// Load the knife texture image
 const knifeImage = new Image();
-knifeImage.src = 'knive.png'; // Example knife texture URL
+knifeImage.src = 'knive.png'; 
 
 knifeImage.onload = function() {
-    // Set block dimensions based on the image dimensions
-    const scale = canvas.width / 20 / knifeImage.width; 
+    const scale = canvas.width / 30 / knifeImage.width; 
     blockWidth = knifeImage.width * scale;
     blockHeight = knifeImage.height * scale;
 
-    // Start the game only after the image has loaded
-    startGame();
+    // Wait for user interaction to start the game
+    canvas.addEventListener('touchstart', startGame);
+    canvas.addEventListener('mousedown', startGame);
 };
 
 function updateFingerPosition(x, y) {
@@ -51,6 +50,9 @@ canvas.addEventListener('touchmove', (event) => {
 canvas.addEventListener('mousemove', (event) => {
     updateFingerPosition(event.clientX, event.clientY);
 });
+
+canvas.addEventListener('touchend', endGame);
+canvas.addEventListener('mouseleave', endGame);
 
 function spawnBlock() {
     let blockX, blockY, overlap;
@@ -143,48 +145,68 @@ function draw() {
     ctx.fillText(`Score: ${score}`, canvas.width - 10, 30);
 }
 
-function startGame() {
-    gameOver = false;
-    dotX = 20;
-    dotY = 20;
-    fingerX = canvas.width / 2;
-    fingerY = canvas.height / 2;
-    dotSpeed = canvas.height * 0.005;
-    blockSpeed = canvas.height * 0.005;
-    score = 0;
-    blocks = [];
-    
-    document.getElementById('retryButton').style.display = 'none';
-    document.getElementById('doneButton').style.display = 'none';
-    document.getElementById('scoreMessage').style.display = 'none';
+function startGame(event) {
+    if (gameOver) {
+        gameOver = false;
+        dotX = 20;
+        dotY = 20;
+        fingerX = canvas.width / 2;
+        fingerY = canvas.height / 2;
+        dotSpeed = canvas.height * 0.005;
+        blockSpeed = canvas.height * 0.005;
+        score = 0;
+        blocks = [];
 
-    // Increase the speed of the dot over time
-    speedIncrement = setInterval(() => {
-        dotSpeed += speedIncrementAmount;
-        blockSpeed += speedIncrementAmount;
-    }, speedIncrementInterval);
+        document.getElementById('retryButton').style.display = 'none';
+        document.getElementById('doneButton').style.display = 'none';
+        document.getElementById('scoreMessage').style.display = 'none';
 
-    blockSpawnInterval = setInterval(spawnBlock, 200);
-
-    scoreInterval = setInterval(() => {
-        if (!gameOver) {
-            score++;
+        // Update the finger position to start position
+        if (event.type === 'touchstart') {
+            const touch = event.touches[0];
+            updateFingerPosition(touch.clientX, touch.clientY);
+        } else if (event.type === 'mousedown') {
+            updateFingerPosition(event.clientX, event.clientY);
         }
-    }, 1000);
 
-    update();
+        // Remove event listeners to avoid multiple calls
+        canvas.removeEventListener('touchstart', startGame);
+        canvas.removeEventListener('mousedown', startGame);
+
+        // Increase the speed of the dot over time
+        speedIncrement = setInterval(() => {
+            dotSpeed += speedIncrementAmount;
+            blockSpeed += speedIncrementAmount;
+        }, speedIncrementInterval);
+
+        blockSpawnInterval = setInterval(spawnBlock, 200);
+
+        scoreInterval = setInterval(() => {
+            if (!gameOver) {
+                score++;
+            }
+        }, 1000);
+
+        update();
+    }
 }
 
 function endGame() {
-    gameOver = true;
-    clearInterval(speedIncrement);
-    clearInterval(blockSpawnInterval);
-    clearInterval(scoreInterval);
+    if (!gameOver) {
+        gameOver = true;
+        clearInterval(speedIncrement);
+        clearInterval(blockSpawnInterval);
+        clearInterval(scoreInterval);
 
-    document.getElementById('scoreMessage').innerText = `Your score is: ${score}`;
-    document.getElementById('scoreMessage').style.display = 'block';
-    document.getElementById('retryButton').style.display = 'block';
-    document.getElementById('doneButton').style.display = 'block';
+        document.getElementById('scoreMessage').innerText = `Your score is: ${score}`;
+        document.getElementById('scoreMessage').style.display = 'block';
+        document.getElementById('retryButton').style.display = 'block';
+        document.getElementById('doneButton').style.display = 'block';
+
+        // Re-add the event listeners to start the game
+        canvas.addEventListener('touchstart', startGame);
+        canvas.addEventListener('mousedown', startGame);
+    }
 }
 
 function retryGame() {
@@ -194,6 +216,3 @@ function retryGame() {
 function doneGame() {
     alert('Thank you for playing!');
 }
-
-// Don't start the game until the image has loaded
-// startGame();
