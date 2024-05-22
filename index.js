@@ -150,13 +150,13 @@ class Invader {
     invaderProjectiles.push(
       new InvaderProjectile({
         position: {
-					x: this.position.x + this.width / 2,
-					y: this.position.y + this.height
-				},
-				velocity: {
-					x: 0,
-					y: 5
-				}
+          x: this.position.x + this.width / 2,
+          y: this.position.y + this.height,
+        },
+        velocity: {
+          x: 0,
+          y: 5,
+        },
       })
     );
   }
@@ -170,7 +170,7 @@ class Grid {
       y: 0,
     };
     this.velocity = {
-      x: 2,
+      x: 0.5,
       y: 0,
     };
 
@@ -237,10 +237,25 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height);
 
   player.update();
-  invaderProjectiles.forEach((invaderProjectile) => {
-    invaderProjectile.update();
+
+  invaderProjectiles.forEach((invaderProjectile, index) => {
+    if (
+      invaderProjectile.position.y + invaderProjectile.height >=
+      canvas.height
+    ) {
+      setTimeout(() => {
+        invaderProjectiles.splice(index, 1);
+      }, 0);
+    } else invaderProjectile.update();
+
+		if(invaderProjectile.position.y + invaderProjectile.height >= player.position.y && 
+			invaderProjectile.position.x + invaderProjectile.width >= player.position.x && 
+			invaderProjectile.position.x <= player.position.x + player.width){
+			console.log('you lose')
+		}
   });
 
+	
   projectiles.forEach((projectile, index) => {
     if (projectile.position.y + projectile.radius <= 0) {
       setTimeout(() => {
@@ -254,6 +269,13 @@ function animate() {
   //grid position
   grids.forEach((grid, gridIndex) => {
     grid.update();
+
+    if (frames % 100 === 0 && grid.invaders.length > 0) {
+      grid.invaders[Math.floor(Math.random() * grid.invaders.length)].shoot(
+        invaderProjectiles
+      );
+    }
+
     grid.invaders.forEach((invader, i) => {
       invader.update({ velocity: grid.velocity });
       projectiles.forEach((projectile, j) => {
@@ -315,8 +337,8 @@ function animate() {
   if (frames % randomInterval === 0) {
     grids.push(new Grid());
     randomInterval = Math.floor(Math.random() * 500 + 500);
-		frames = 0
-		console.log(randomInterval)
+    frames = 0;
+    console.log(randomInterval);
   }
 
   frames++;
