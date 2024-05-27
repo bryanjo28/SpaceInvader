@@ -400,13 +400,14 @@ function animate() {
 				invaderProjectiles.splice(index, 1);
 				player.opacity = 0,
 				game.over = true
+				clearInterval(autoShootInterval);
 			}, 0);
 
 			setTimeout(() => {
 				game.active = false,
 				gameOverOverlay.classList.add("active"); // Menampilkan overlay game over
-				clearInterval(autoShootInterval);
-			}, 2000);
+				
+			}, 1000);
 
 			console.log('you lose')
 			createParticles({
