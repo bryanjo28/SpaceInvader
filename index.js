@@ -1,8 +1,47 @@
 const canvas = document.querySelector("canvas");
+const scoreEl = document.querySelector("#score");
+const gameOverOverlay = document.getElementById("gameOverOverlay"); // Mendapatkan elemen overlay game over
+const restartButton = document.getElementById("restartButton"); // Mendapatkan tombol restart
+
 const c = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-console.log("canvas");
+
+
+console.log(scoreEl)
+
+let touchStartX = null; // Simpan posisi sentuhan awal
+const swipeThreshold = 50; // Ambang batas untuk menganggap gerakan sebagai swipe
+
+// Tangani peristiwa sentuhan
+canvas.addEventListener("touchstart", (event) => {
+	touchStartX = event.touches[0].clientX; // Simpan posisi sentuhan awal
+});
+
+canvas.addEventListener("touchmove", (event) => {
+	if (touchStartX === null) return; // Jika tidak ada sentuhan awal, keluar dari fungsi
+	const touchMoveX = event.touches[0].clientX; // Ambil posisi sentuhan saat ini
+	const swipeDistance = touchMoveX - touchStartX; // Hitung pergeseran horizontal
+
+	// Geser karakter berdasarkan pergeseran, misalnya:
+	if (swipeDistance > swipeThreshold) {
+			// Geser ke kanan
+			keys.a.pressed = false;
+			keys.d.pressed = true;
+	} else if (swipeDistance < -swipeThreshold) {
+			// Geser ke kiri
+			keys.a.pressed = true;
+			keys.d.pressed = false;
+	}
+});
+
+canvas.addEventListener("touchend", () => {
+	touchStartX = null; // Reset posisi sentuhan awal saat sentuhan berakhir
+	// Berhenti menggerakkan karakter saat sentuhan berakhir
+	keys.a.pressed = false;
+	keys.d.pressed = false;
+});
+
 
 class Player {
 	constructor() {
@@ -12,7 +51,7 @@ class Player {
 		};
 
 		this.rotation = 0;
-
+		this.opacity = 1;
 		const image = new Image();
 		image.src = "./spaceship.png";
 		image.onload = () => {
@@ -31,6 +70,7 @@ class Player {
 		// c.fillStyle = 'red'
 		// c.fillRect(this.position.x, this.position.y, this.width, this.height)
 		c.save();
+		c.globalAlpha = this.opacity
 		c.translate(
 			player.position.x + player.width / 2,
 			player.position.y + player.height / 2
@@ -85,13 +125,14 @@ class Projectile {
 
 //particle
 class Particle {
-	constructor({ position, velocity, radius, color }) {
+	constructor({ position, velocity, radius, color, fades }) {
 		this.position = position;
 		this.velocity = velocity;
 
 		this.radius = radius;
 		this.color = color;
 		this.opacity = 1;
+		this.fades = fades
 	}
 	draw() {
 		c.save()
@@ -108,7 +149,7 @@ class Particle {
 		this.draw();
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
-		this.opacity -= 0.01
+		if (this.fades) this.opacity -= 0.01
 	}
 }
 
@@ -259,10 +300,31 @@ const keys = {
 
 let frames = 0;
 let randomInterval = Math.floor(Math.random() * 500 + 500);
-console.log(randomInterval);
+let game = {
+	over: false,
+	active: true
+}
+let score = 0
+
+//star di canvas
+for (let i = 0; i < 100; i++) {
+	particles.push(
+		new Particle({
+			position: {
+				x: Math.random() * canvas.width,
+				y: Math.random() * canvas.height
+			},
+			velocity: {
+				x: 0,
+				y: 0.2
+			},
+			radius: Math.random() * 2,
+			color: "white"
+		}))
+}
 
 //fungsi particles
-function createParticles({ object, color }) {
+function createParticles({ object, color, fades }) {
 	for (let i = 0; i < 15; i++) {
 		particles.push(new Particle({
 			position: {
@@ -274,18 +336,24 @@ function createParticles({ object, color }) {
 				y: (Math.random() - 0.5) * 2
 			},
 			radius: Math.random() * 3,
-			color: color || "#BAA0DE"
+			color: color || "#BAA0DE",
+			fades
 		}))
 	}
 }
 
 //fungsi animasi
 function animate() {
+	if(!game.active) return
 	requestAnimationFrame(animate);
 	c.fillStyle = "black";
 	c.fillRect(0, 0, canvas.width, canvas.height);
 	player.update();
 	particles.forEach((particle, i) => {
+		if(particle.position.y - particle.radius >= canvas.height){
+			particle.position.x = Math.random() * canvas.width,
+			particle.position.y = -particle.radius
+		}
 		if (particle.opacity <= 0) {
 			setTimeout(() => {
 				particles.splice(i, 1)
@@ -305,17 +373,26 @@ function animate() {
 			}, 0);
 		} else invaderProjectile.update();
 
-		// projectiles hit
+		// projectiles hit players
 		if (invaderProjectile.position.y + invaderProjectile.height >= player.position.y &&
 			invaderProjectile.position.x + invaderProjectile.width >= player.position.x &&
 			invaderProjectile.position.x <= player.position.x + player.width) {
 			setTimeout(() => {
 				invaderProjectiles.splice(index, 1);
+				player.opacity = 0,
+				game.over = true
 			}, 0);
+
+			setTimeout(() => {
+				game.active = false,
+				gameOverOverlay.classList.add("active"); // Menampilkan overlay game over
+			}, 2000);
+
 			console.log('you lose')
 			createParticles({
 				object: player,
-				color: 'white'
+				color: 'white',
+				fades: true
 			})
 		}
 	});
@@ -366,9 +443,12 @@ function animate() {
 
 						//remove invader and projectile
 						if (invaderFound && projectileFound) {
+						 	score	+= 100
+							scoreEl.innerHTML = score
 							//particles animate
 							createParticles({
-								object: invader
+								object: invader,
+								fades: true
 							})
 
 							grid.invaders.splice(i, 1);
@@ -421,6 +501,8 @@ function animate() {
 animate();
 
 addEventListener("keydown", ({ key }) => {
+	if(game.over) return
+
 	switch (key) {
 		case "a":
 			console.log("left");

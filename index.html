@@ -2,19 +2,112 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
 
-    <style>
-        body {
-            margin: 0;
-        }
-    </style>
+	<style>
+		body {
+			margin: 0;
+			display: flex;
+			overflow: hidden;
+		}
+
+		/* Styling overlay */
+		.overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+			/* Warna latar belakang semi-transparan */
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 999;
+			/* Z-index tinggi untuk menampilkan di atas konten lain */
+			opacity: 0;
+			/* Mulai dengan opasitas nol */
+			visibility: hidden;
+			/* Mulai dengan tidak terlihat */
+			transition: opacity 0.3s, visibility 0s 0.3s;
+			/* Transisi untuk efek muncul */
+		}
+
+		.overlay.active {
+			opacity: 1;
+			/* Munculkan dengan opasitas penuh */
+			visibility: visible;
+			/* Jadikan terlihat */
+			transition: opacity 0.3s, visibility 0s;
+			/* Transisi saat aktif */
+		}
+
+		.overlay-content {
+			background-color: #ffffff;
+			/* Warna latar belakang */
+			padding: 20px;
+			/* Padding untuk konten */
+			border-radius: 10px;
+			/* Border radius sudut */
+			text-align: center;
+			/* Teks rata tengah */
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+			/* Efek bayangan */
+		}
+
+		.overlay h2 {
+			margin-top: 0;
+			/* Hilangkan margin atas */
+		}
+
+		.overlay button {
+			padding: 10px 20px;
+			/* Padding untuk tombol */
+			font-size: 16px;
+			/* Ukuran teks tombol */
+			background-color: blue;
+			/* Warna latar tombol */
+			color: #ffffff;
+			/* Warna teks tombol */
+			border: none;
+			/* Hapus border */
+			border-radius: 5px;
+			/* Border radius sudut */
+			cursor: pointer;
+			/* Ubah cursor saat dihover */
+			transition: background-color 0.3s;
+			/* Transisi saat dihover */
+		}
+
+		.overlay button:hover {
+			background-color: blue;
+			/* Ubah warna latar saat dihover */
+		}
+	</style>
 </head>
+
 <body>
-    <canvas></canvas>
-    <script src="./index.js"></script>
+	<div class="overlay" id="gameOverOverlay">
+		<div class="overlay-content">
+			<h2>Game Over</h2>
+			<button onclick="restartGame()">Restart</button>
+		</div>
+	</div>
+
+	<p style="position: fixed; z-index: 10; color: white; left: 10px; top: 10px; margin: 0;
+			font-family: sans-serif; font-size: 14px; "><span>Score:</span><span id="score">0</span></p>
+	<canvas></canvas>
+	<script src="./index.js"></script>
+
+	<script>
+		function restartGame() {
+			// Restart logic here, for example:
+			// Reload the page
+			location.reload();
+		}
+	</script>
 </body>
 
 </html>
