@@ -98,6 +98,7 @@ class Player {
 			this.position.x += this.velocity.x;
 		}
 	}
+	
 }
 
 //projectile
@@ -342,6 +343,24 @@ function createParticles({ object, color, fades }) {
 	}
 }
 
+// Menambahkan fungsi untuk menembak secara otomatis setiap interval tertentu
+function autoShoot() {
+	projectiles.push(
+			new Projectile({
+					position: {
+							x: player.position.x + player.width / 2,
+							y: player.position.y,
+					},
+					velocity: {
+							x: 0,
+							y: -10,
+					},
+			})
+	);
+}
+// Mengatur interval tembakan otomatis
+const autoShootInterval = setInterval(autoShoot, 500); 
+
 //fungsi animasi
 function animate() {
 	if(!game.active) return
@@ -386,6 +405,7 @@ function animate() {
 			setTimeout(() => {
 				game.active = false,
 				gameOverOverlay.classList.add("active"); // Menampilkan overlay game over
+				clearInterval(autoShootInterval);
 			}, 2000);
 
 			console.log('you lose')
