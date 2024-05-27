@@ -100,14 +100,27 @@
 			font-family: sans-serif; font-size: 14px; "><span>Score:</span><span id="score">0</span></p>
 	<canvas></canvas>
 	<script src="./index.js"></script>
-
+	<audio id="backgroundMusic" autoplay loop>
+		<source src="/audio/backgroundMusic.wav" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
 	<script>
+		const gameStart = new Audio("/audio/start.mp3");
+
 		function restartGame() {
 			// Restart logic here, for example:
 			// Reload the page
+			gameStart.play();
 			location.reload();
 		}
+		const backgroundMusic = document.getElementById("backgroundMusic");
+		backgroundMusic.volume = 0.5; // Volume dapat diatur antara 0 dan 1, di mana 1 adalah volume penuh
+		document.addEventListener("DOMContentLoaded", function () {
+			const backgroundMusic = document.getElementById("backgroundMusic");
+			backgroundMusic.volume = 0.5;
+		});
 	</script>
+
 </body>
 
 </html>

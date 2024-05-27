@@ -25,13 +25,13 @@ canvas.addEventListener("touchmove", (event) => {
 
 	// Geser karakter berdasarkan pergeseran, misalnya:
 	if (swipeDistance > swipeThreshold) {
-			// Geser ke kanan
-			keys.a.pressed = false;
-			keys.d.pressed = true;
+		// Geser ke kanan
+		keys.a.pressed = false;
+		keys.d.pressed = true;
 	} else if (swipeDistance < -swipeThreshold) {
-			// Geser ke kiri
-			keys.a.pressed = true;
-			keys.d.pressed = false;
+		// Geser ke kiri
+		keys.a.pressed = true;
+		keys.d.pressed = false;
 	}
 });
 
@@ -98,7 +98,7 @@ class Player {
 			this.position.x += this.velocity.x;
 		}
 	}
-	
+
 }
 
 //projectile
@@ -286,6 +286,9 @@ const projectiles = [];
 const grids = [];
 const invaderProjectiles = [];
 const particles = [];
+const shootSound = new Audio("/audio/shoot.wav");
+const gameOverSound = new Audio("/audio/gameOver.mp3");
+
 
 const keys = {
 	a: {
@@ -346,32 +349,34 @@ function createParticles({ object, color, fades }) {
 // Menambahkan fungsi untuk menembak secara otomatis setiap interval tertentu
 function autoShoot() {
 	projectiles.push(
-			new Projectile({
-					position: {
-							x: player.position.x + player.width / 2,
-							y: player.position.y,
-					},
-					velocity: {
-							x: 0,
-							y: -10,
-					},
-			})
+		new Projectile({
+			position: {
+				x: player.position.x + player.width / 2,
+				y: player.position.y,
+			},
+			velocity: {
+				x: 0,
+				y: -10,
+			},
+		})
 	);
+	// Memainkan suara tembakan
+	shootSound.play();
 }
 // Mengatur interval tembakan otomatis
-const autoShootInterval = setInterval(autoShoot, 500); 
+const autoShootInterval = setInterval(autoShoot, 500);
 
 //fungsi animasi
 function animate() {
-	if(!game.active) return
+	if (!game.active) return
 	requestAnimationFrame(animate);
 	c.fillStyle = "black";
 	c.fillRect(0, 0, canvas.width, canvas.height);
 	player.update();
 	particles.forEach((particle, i) => {
-		if(particle.position.y - particle.radius >= canvas.height){
+		if (particle.position.y - particle.radius >= canvas.height) {
 			particle.position.x = Math.random() * canvas.width,
-			particle.position.y = -particle.radius
+				particle.position.y = -particle.radius
 		}
 		if (particle.opacity <= 0) {
 			setTimeout(() => {
@@ -399,14 +404,15 @@ function animate() {
 			setTimeout(() => {
 				invaderProjectiles.splice(index, 1);
 				player.opacity = 0,
-				game.over = true
+					game.over = true
 				clearInterval(autoShootInterval);
 			}, 0);
 
 			setTimeout(() => {
 				game.active = false,
-				gameOverOverlay.classList.add("active"); // Menampilkan overlay game over
-				
+					gameOverOverlay.classList.add("active"); // Menampilkan overlay game over
+				// Memainkan suara tembakan
+				gameOverSound.play();
 			}, 1000);
 
 			console.log('you lose')
@@ -464,7 +470,7 @@ function animate() {
 
 						//remove invader and projectile
 						if (invaderFound && projectileFound) {
-						 	score	+= 100
+							score += 100
 							scoreEl.innerHTML = score
 							//particles animate
 							createParticles({
@@ -522,7 +528,7 @@ function animate() {
 animate();
 
 addEventListener("keydown", ({ key }) => {
-	if(game.over) return
+	if (game.over) return
 
 	switch (key) {
 		case "a":
