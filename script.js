@@ -7,15 +7,16 @@ const scoreEl = document.querySelector("#score");
 const time = document.querySelector("#timer");
 const gameOverDialog = document.querySelector("#gameOverDialog");
 
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 // Player object
 const player = {
     x: canvas.width / 2,
-    y: canvas.height - 80,
-    width: 100,
-    height: 100,
+    y: canvas.height - 100,
+    width: 130,
+    height: 130,
     speed: 5
 };
 
@@ -37,6 +38,10 @@ image2.src = 'bomb.png'
 const playerImage = new Image();
 playerImage.src = 'box.png';
 
+//sound
+const coinSound = new Audio("/audio/coinsound.mp3");
+const bombSound = new Audio("/audio/explode.wav");
+const gameOverSound = new Audio("/audio/gameover.mp3");
 
 // Keyboard event listeners
 document.addEventListener('keydown', keyDownHandler);
@@ -144,8 +149,8 @@ function drawCircles() {
             ctx.drawImage(circle.image, circle.x - imageWidth / 2, circle.y - imageHeight / 2, imageWidth, imageHeight);
         } else {
              // Adjust the width here (e.g., multiply by 2)
-            const imageWidth = circleRadius * 8; // Adjust the multiplier as needed
-            const imageHeight = circleRadius * 8; // Keep aspect ratio
+            const imageWidth = circleRadius * 9; // Adjust the multiplier as needed
+            const imageHeight = circleRadius * 9; // Keep aspect ratio
             ctx.drawImage(circle.image, circle.x - imageWidth / 2, circle.y - imageHeight / 2, imageWidth, imageHeight);
         }
     }
@@ -170,8 +175,10 @@ function updateCircles(deltaTime) {
             circles.splice(i, 1);
             i--;
             if (!circle.isBlue) {
+                coinSound.play();
                 score += 100;
             } else {
+                bombSound.play()
                 score -= 100;
             }
             scoreEl.textContent = score;
@@ -192,9 +199,15 @@ let gameOver = false;
 let lastTime = 0;
 let timerInterval;
 
+
 // Function to show game over dialog
 function showGameOverDialog() {
+    var scoreDisplay = gameOverDialog.querySelector("#scoreDisplay");
+
+    scoreDisplay.textContent = score;
+
     gameOverDialog.style.display = 'block';
+
 }
 
 
@@ -207,6 +220,7 @@ function updateTimer(deltaTime) {
 
     if (gameTimeInSeconds <= 0) {
         gameOver = true;
+        gameOverSound.play()
         clearInterval(timerInterval);
         showGameOverDialog(); // Call function to show game over dialog
     }
