@@ -75,6 +75,42 @@ function updatePlayer() {
     }
 }
 
+// Player movement variables
+let touchStartX = null;
+
+// Touch event listeners
+canvas.addEventListener('touchstart', handleTouchStart, false);
+canvas.addEventListener('touchend', handleTouchEnd, false);
+
+// Handle touch start event
+function handleTouchStart(event) {
+    touchStartX = event.touches[0].clientX;
+}
+
+// Handle touch end event
+function handleTouchEnd(event) {
+    if (!touchStartX) return;
+
+    const touchEndX = event.changedTouches[0].clientX;
+    const swipeDistance = touchEndX - touchStartX;
+
+    if (swipeDistance > 0) {
+        // Swipe right
+        rightPressed = true;
+        leftPressed = false;
+    } else {
+        // Swipe left
+        rightPressed = false;
+        leftPressed = true;
+    }
+
+    // Reset touch start position
+    touchStartX = null;
+}
+
+
+
+
 // Generate a random circle
 function generateCircle() {
     const isBlue = Math.random() < blueCircleSpawnRate;
