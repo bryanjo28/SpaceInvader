@@ -13,9 +13,9 @@ canvas.height = window.innerHeight;
 // Player object
 const player = {
     x: canvas.width / 2,
-    y: canvas.height - 30,
-    width: 50,
-    height: 50,
+    y: canvas.height - 80,
+    width: 100,
+    height: 100,
     speed: 5
 };
 
@@ -29,8 +29,14 @@ const blueCircleSpawnRate = 0.3; // Adjust this value for desired spawn rate
 const image = new Image();
 image.src = 'money.png';
 
+//load bomb image
 const image2 = new Image()
 image2.src = 'bomb.png'
+
+// Load the image for the player
+const playerImage = new Image();
+playerImage.src = 'box.png';
+
 
 // Keyboard event listeners
 document.addEventListener('keydown', keyDownHandler);
@@ -120,11 +126,7 @@ function updateCircles(deltaTime) {
 }
 // Draw player
 function drawPlayer() {
-    ctx.beginPath();
-    ctx.rect(player.x, player.y, player.width, player.height);
-    ctx.fillStyle = '#0095DD';
-    ctx.fill();
-    ctx.closePath();
+    ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
 }
 
 // Draw circles
