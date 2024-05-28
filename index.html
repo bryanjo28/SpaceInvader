@@ -1,46 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Money Catcher</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Encouragement Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div id="gameOverDialog" class="dialog">
-        <p>Game Over</p>
-        <p>Your Score: <span id="scoreDisplay">0</span></p>
-        <button onclick="restartGame()">Restart</button>
+    <div id="counter">Encouragements Given: 0</div>
+    <div id="messageContainer">
+        <div id="message"></div>
     </div>
+    <button id="encourageButton">Encourage</button>
 
-    <p style="position: fixed; z-index: 10; color: black; left: 10px; top: 10px; margin: 0;
-			font-family: sans-serif; font-size: 18px; font-weight: bold; "><span>Score:</span><span id="score">0</span></p>
-    <p
-        style="position: fixed; z-index: 10; color: black; top: 20px; right: 20px; margin: 0; font-family: sans-serif; font-size: 18px; ">
-        <span>Timer:</span> <span id="timer"></span>
-    </p>
-
-
-    <canvas id="gameCanvas"></canvas>
     <script src="script.js"></script>
-
-    <!-- <audio id="myAudio" autoplay loop>
-        <source src="/audio/bgmusic.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio> -->
-
-    <script>
-        
-        // function setVolume(volume) {
-        //     var audio = document.getElementById("myAudio");
-        //     audio.volume = volume;
-        // }
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     setVolume(0.9); // Mengatur volume menjadi 50% saat halaman dimuat
-        // });
-    </script>
 </body>
-
 </html>
