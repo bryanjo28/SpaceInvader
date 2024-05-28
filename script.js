@@ -80,11 +80,17 @@ let touchStartX = null;
 
 // Touch event listeners
 canvas.addEventListener('touchstart', handleTouchStart, false);
+canvas.addEventListener('touchmove', handleTouchMove, false);
 canvas.addEventListener('touchend', handleTouchEnd, false);
 
 // Handle touch start event
 function handleTouchStart(event) {
     touchStartX = event.touches[0].clientX;
+}
+
+// Handle touch move event
+function handleTouchMove(event) {
+    event.preventDefault(); // Prevent scrolling while swiping
 }
 
 // Handle touch end event
@@ -94,14 +100,17 @@ function handleTouchEnd(event) {
     const touchEndX = event.changedTouches[0].clientX;
     const swipeDistance = touchEndX - touchStartX;
 
-    if (swipeDistance > 0) {
-        // Swipe right
-        rightPressed = true;
-        leftPressed = false;
-    } else {
-        // Swipe left
-        rightPressed = false;
-        leftPressed = true;
+    // Determine if swipe is significant enough
+    if (Math.abs(swipeDistance) > 50) {
+        if (swipeDistance > 0) {
+            // Swipe right
+            rightPressed = true;
+            leftPressed = false;
+        } else {
+            // Swipe left
+            rightPressed = false;
+            leftPressed = true;
+        }
     }
 
     // Reset touch start position
