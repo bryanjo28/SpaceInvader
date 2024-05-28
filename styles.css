@@ -9,3 +9,39 @@ canvas {
     margin: 0 auto;
     background-color: #f0f0f0;
 }
+
+
+/* style.css */
+
+/* Game over dialog */
+.dialog {
+    display: none; /* Hide the dialog initially */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}
+
+.dialog p {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.dialog button {
+    background-color: #0095DD;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.dialog button:hover {
+    background-color: #0077BB;
+}

@@ -4,6 +4,8 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreEl = document.querySelector("#score");
+const time = document.querySelector("#timer");
+const gameOverDialog = document.querySelector("#gameOverDialog");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -64,10 +66,10 @@ function generateCircle() {
 
 
 // Update circles position and check for collision with the bottom of canvas
-function updateCircles() {
+function updateCircles(deltaTime) {
     for (let i = 0; i < circles.length; i++) {
         const circle = circles[i];
-        circle.y += circle.speed;
+        circle.y += circle.speed * deltaTime;
         if (circle.y > canvas.height + circleRadius) {
             circles.splice(i, 1); // Remove circle if it's beyond canvas height
             i--; // Decrement i since array length has changed
@@ -97,10 +99,10 @@ function drawCircles() {
 
 let score = 0
 // Update circles position and check for collision with the player or the bottom of canvas
-function updateCircles() {
+function updateCircles(deltaTime) {
     for (let i = 0; i < circles.length; i++) {
         const circle = circles[i];
-        circle.y += circle.speed;
+        circle.y += circle.speed * deltaTime / 15; //
 
         // Check collision with the player
         if (
@@ -113,7 +115,7 @@ function updateCircles() {
             circles.splice(i, 1);
             i--;
             score += 100
-			scoreEl.innerHTML = score
+            scoreEl.innerHTML = score
             continue; // Skip further processing for this circle since it's removed
         }
 
@@ -125,21 +127,73 @@ function updateCircles() {
     }
 }
 
-// Main game loop
-function gameLoop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+// Timer variables
+let gameTimeInSeconds = 120; // 2 minutes
+let gameOver = false;
+let lastTime = 0;
+let timerInterval;
 
-    updatePlayer();
-    updateCircles();
-    drawPlayer();
-    drawCircles();
+// Function to show game over dialog
+function showGameOverDialog() {
+    gameOverDialog.style.display = 'block';
+}
 
-    // Generate a new circle randomly
-    if (Math.random() < 0.02) {
-        generateCircle();
+
+// Update timer
+function updateTimer(deltaTime) {
+    gameTimeInSeconds -= deltaTime / 1000;
+    const minutes = Math.floor(gameTimeInSeconds / 60);
+    const seconds = Math.floor(gameTimeInSeconds % 60);
+    time.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+    if (gameTimeInSeconds <= 0) {
+        gameOver = true;
+        clearInterval(timerInterval);
+        showGameOverDialog(); // Call function to show game over dialog
     }
+}
 
+
+// Function to restart the game
+function restartGame() {
+    // Reset game variables
+    gameTimeInSeconds = 120;
+    gameOver = false;
+    score = 0;
+    circles.length = 0; // Clear circles array
+    scoreEl.textContent = '0'; // Reset score display
+    time.textContent = '02:00'; // Reset timer display
+
+    // Hide the game over dialog
+    gameOverDialog.style.display = 'none';
+
+    // Restart the game loop
+    lastTime = 0;
     requestAnimationFrame(gameLoop);
 }
 
-gameLoop();
+// Main game loop
+function gameLoop(timestamp) {
+    if (!lastTime) lastTime = timestamp;
+    const deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+
+    if (!gameOver) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        updatePlayer();
+        updateCircles(deltaTime);
+        drawPlayer();
+        drawCircles();
+        updateTimer(deltaTime);
+
+        // Generate a new circle randomly
+        if (Math.random() < 0.02) {
+            generateCircle();
+        }
+
+        requestAnimationFrame(gameLoop);
+    }
+}
+
+requestAnimationFrame(gameLoop);
