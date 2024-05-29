@@ -1,46 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Money Catcher</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Urutan Angka</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* CSS untuk tombol mulai game */
+    #start-button, #restart-button {
+        display: block;
+        margin: auto; /* Posisikan tombol ke tengah */
+    }
+  </style>
 </head>
-
 <body>
-    <div id="gameOverDialog" class="dialog">
-        <p>Game Over</p>
-        <p>Your Score: <span id="scoreDisplay">0</span></p>
-        <button onclick="restartGame()">Restart</button>
-    </div>
+  <div id="container">
+    <div id="timer">Timer: <span id="timer-countdown">10</span> detik</div>
 
-    <p style="position: fixed; z-index: 10; color: black; left: 10px; top: 10px; margin: 0;
-			font-family: sans-serif; font-size: 18px; font-weight: bold; "><span>Score:</span><span id="score">0</span></p>
-
-    <div id="lives"  style="position: fixed; z-index: 10; color: black; top: 0px; right: 0px; ">
-        <span id="life1"></span>
-        <span id="life2"></span>
-        <span id="life3"></span>
-    </div>
-    <canvas id="gameCanvas"></canvas>
-    <script src="script.js"></script>
-
-    <!-- <audio id="myAudio" autoplay loop>
-        <source src="/audio/bgmusic.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio> -->
-
-    <script>
-        
-        // function setVolume(volume) {
-        //     var audio = document.getElementById("myAudio");
-        //     audio.volume = volume;
-        // }
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     setVolume(0.9); // Mengatur volume menjadi 50% saat halaman dimuat
-        // });
-    </script>
+    <div id="number-sequence"></div>
+    <div id="button-container"></div>
+    <div id="score">Score: 0</div> <!-- Menampilkan skor -->
+    <button id="start-button" onclick="startGame()">Mulai Game</button>
+    <button id="restart-button" onclick="restartGame()" style="display: none;">Restart Game</button>
+    <p id="message"></p>
+  </div>
+  
+  <script src="script.js"></script>
 </body>
-
 </html>

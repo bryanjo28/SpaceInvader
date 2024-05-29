@@ -1,58 +1,43 @@
+/* CSS */
 body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
-canvas {
-    display: block;
-    margin: 0 auto;
-    background-color: #f0f0f0;
-}
-
-#gameCanvas {
-    background-image: url('background1.png');
-    background-size: cover;
-}
-/* style.css */
-
-/* Game over dialog */
-.dialog {
-    display: none; /* Hide the dialog initially */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
+#container {
     text-align: center;
+    margin-top: 50px;
 }
 
-.dialog p {
+#start-button {
+    display: block;
+    margin: auto; /* Posisikan tombol ke tengah */
+}
+
+#number-sequence {
     font-size: 24px;
     margin-bottom: 20px;
 }
 
-.dialog button {
-    background-color: #0095DD;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 18px;
+.number-button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    margin: 5px;
+    background-color: #ffffff; /* Warna latar belakang default */
+    transition: background-color 0.3s ease; /* Efek transisi */
 }
 
-.dialog button:hover {
-    background-color: #0077BB;
+/* Efek hover */
+.number-button:hover:not(.clicked) {
+    background-color: #00ff00; /* Warna latar belakang hijau saat dihover */
 }
 
-.life-icon {
-    display: inline-block;
-    width: 50px; /* Adjust width and height as needed */
-    height: 40px;
-    background-image: url('heart.png'); /* Use heart.png as background image */
-    background-size: cover;; /* Add margin for spacing */
+/* Tombol yang sudah diklik */
+.number-button.clicked {
+    background-color: #00ff00; /* Warna latar belakang hijau */
+}
+
+/* Klik hanya berlaku untuk tombol yang belum diklik */
+.number-button:not(.clicked):active {
+    background-color: #ffffff; /* Kembali ke warna latar belakang default saat diklik */
 }
