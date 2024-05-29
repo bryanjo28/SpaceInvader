@@ -39,7 +39,7 @@ const playerImage = new Image();
 playerImage.src = 'box.png';
 
 //sound
-const coinSound = new Audio("/audio/coinsound.mp3");
+const coinSound = new Audio("/audio/coinsoundmin.mp3");
 const bombSound = new Audio("/audio/explode.wav");
 const gameOverSound = new Audio("/audio/gameover.mp3");
 
