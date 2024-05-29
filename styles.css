@@ -48,3 +48,11 @@ canvas {
 .dialog button:hover {
     background-color: #0077BB;
 }
+
+.life-icon {
+    display: inline-block;
+    width: 50px; /* Adjust width and height as needed */
+    height: 40px;
+    background-image: url('heart.png'); /* Use heart.png as background image */
+    background-size: cover;; /* Add margin for spacing */
+}

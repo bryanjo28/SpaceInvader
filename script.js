@@ -5,6 +5,7 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreEl = document.querySelector("#score");
 const time = document.querySelector("#timer");
+const livesContainer = document.querySelector("#lives");
 const gameOverDialog = document.querySelector("#gameOverDialog");
 
 
@@ -24,13 +25,14 @@ const player = {
 const circles = [];
 const circleRadius = 15;
 const maxCircleSpeed = 5;
+const blueCircleSpawnRate = 0.4;
+const maxLives = 3; // Maximum number of lives
 
-const blueCircleSpawnRate = 0.3; // Adjust this value for desired spawn rate
 // Load the image for the red circle
 const image = new Image();
 image.src = 'money.png';
 
-//load bomb image
+// Load bomb image
 const image2 = new Image()
 image2.src = 'bomb.png'
 
@@ -38,7 +40,11 @@ image2.src = 'bomb.png'
 const playerImage = new Image();
 playerImage.src = 'box.png';
 
-//sound
+// Load heart image
+const heartImage = new Image();
+heartImage.src = 'heart.png';
+
+// Sound
 const coinSound = new Audio("/audio/coinsoundmin.mp3");
 const bombSound = new Audio("/audio/explode.wav");
 const gameOverSound = new Audio("/audio/gameover.mp3");
@@ -117,9 +123,6 @@ function handleTouchEnd(event) {
     touchStartX = null;
 }
 
-
-
-
 // Generate a random circle
 function generateCircle() {
     const isBlue = Math.random() < blueCircleSpawnRate;
@@ -134,13 +137,11 @@ function generateCircle() {
     };
     if (isBlue) {
         circle.image = image2;
-    } else{
-        
+    } else {
         circle.image = image;
     }
     circles.push(circle);
 }
-
 
 // Update circles position and check for collision with the player or the bottom of canvas
 function updateCircles(deltaTime) {
@@ -155,25 +156,34 @@ function updateCircles(deltaTime) {
             circle.y > player.y &&
             circle.y < player.y + player.height
         ) {
-            // Remove the circle and player
             circles.splice(i, 1);
             i--;
             if (!circle.isBlue) {
+                coinSound.play();
                 score += 100;
             } else {
-                score -= 100;
+                bombSound.play();
+                lives--; // Reduce lives if hit a bomb
+                updateLivesDisplay(); // Update lives display
+                if (lives === 0) {
+                    gameOver = true;
+                    gameOverSound.play();
+                    clearInterval(timerInterval);
+                    showGameOverDialog(); // Call function to show game over dialog
+                }
             }
             scoreEl.textContent = score;
-            continue; // Skip further processing for this circle since it's removed
+            continue;
         }
 
         // Check collision with the bottom of canvas
         if (circle.y > canvas.height + circleRadius) {
-            circles.splice(i, 1); // Remove circle if it's beyond canvas height
-            i--; // Decrement i since array length has changed
+            circles.splice(i, 1);
+            i--;
         }
     }
 }
+
 // Draw player
 function drawPlayer() {
     ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
@@ -182,105 +192,34 @@ function drawPlayer() {
 // Draw circles
 function drawCircles() {
     for (const circle of circles) {
-        if (circle.isBlue) {
-            // ctx.beginPath();
-            // ctx.arc(circle.x, circle.y, circleRadius, 0, Math.PI * 2);
-            // ctx.fillStyle = '#0000FF';
-            // ctx.fill();
-            // ctx.closePath();
-            
-            const imageWidth = circleRadius * 8; // Adjust the multiplier as needed
-            const imageHeight = circleRadius * 8; // Keep aspect ratio
-            ctx.drawImage(circle.image, circle.x - imageWidth / 2, circle.y - imageHeight / 2, imageWidth, imageHeight);
-        } else {
-             // Adjust the width here (e.g., multiply by 2)
-            const imageWidth = circleRadius * 9; // Adjust the multiplier as needed
-            const imageHeight = circleRadius * 9; // Keep aspect ratio
-            ctx.drawImage(circle.image, circle.x - imageWidth / 2, circle.y - imageHeight / 2, imageWidth, imageHeight);
-        }
+        const imageWidth = circleRadius * 8; // Adjust the multiplier as needed
+        const imageHeight = circleRadius * 8; // Keep aspect ratio
+        ctx.drawImage(circle.image, circle.x - imageWidth / 2, circle.y - imageHeight / 2, imageWidth, imageHeight);
     }
 }
 
-let score = 0
-
-// Update circles position and check for collision with the player or the bottom of canvas
-function updateCircles(deltaTime) {
-    for (let i = 0; i < circles.length; i++) {
-        const circle = circles[i];
-        circle.y += circle.speed * deltaTime / 15;
-
-        // Check collision with the player
-        if (
-            circle.x > player.x &&
-            circle.x < player.x + player.width &&
-            circle.y > player.y &&
-            circle.y < player.y + player.height
-        ) {
-            // Remove the circle and player
-            circles.splice(i, 1);
-            i--;
-            if (!circle.isBlue) {
-                coinSound.play();
-                score += 100;
-            } else {
-                bombSound.play()
-                score -= 100;
-            }
-            scoreEl.textContent = score;
-            continue; // Skip further processing for this circle since it's removed
-        }
-
-        // Check collision with the bottom of canvas
-        if (circle.y > canvas.height + circleRadius) {
-            circles.splice(i, 1); // Remove circle if it's beyond canvas height
-            i--; // Decrement i since array length has changed
-        }
-    }
-}
-
-// Timer variables
-let gameTimeInSeconds = 60; // 2 minutes
+let score = 0;
+let lives = maxLives; // Initial number of lives
 let gameOver = false;
 let lastTime = 0;
 let timerInterval;
 
-
 // Function to show game over dialog
 function showGameOverDialog() {
     var scoreDisplay = gameOverDialog.querySelector("#scoreDisplay");
-
     scoreDisplay.textContent = score;
-
     gameOverDialog.style.display = 'block';
-
 }
-
-
-// Update timer
-function updateTimer(deltaTime) {
-    gameTimeInSeconds -= deltaTime / 1000;
-    const minutes = Math.floor(gameTimeInSeconds / 60);
-    const seconds = Math.floor(gameTimeInSeconds % 60);
-    time.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-    if (gameTimeInSeconds <= 0) {
-        gameOver = true;
-        gameOverSound.play()
-        clearInterval(timerInterval);
-        showGameOverDialog(); // Call function to show game over dialog
-    }
-}
-
 
 // Function to restart the game
 function restartGame() {
     // Reset game variables
-    gameTimeInSeconds = 60;
     gameOver = false;
     score = 0;
+    lives = maxLives;
     circles.length = 0; // Clear circles array
     scoreEl.textContent = '0'; // Reset score display
-    time.textContent = '01:00'; // Reset timer display
+    updateLivesDisplay(); // Reset lives display
 
     // Hide the game over dialog
     gameOverDialog.style.display = 'none';
@@ -289,6 +228,21 @@ function restartGame() {
     lastTime = 0;
     requestAnimationFrame(gameLoop);
 }
+
+// Update timer
+function updateTimer(deltaTime) {
+    // Time is unlimited, no need to update timer
+}
+
+// Function to update lives display
+function updateLivesDisplay() {
+    livesContainer.innerHTML = '';
+    for (let i = 0; i < lives; i++) {
+        livesContainer.innerHTML += '<span class="life-icon"><img src="heart.png" alt="Heart"></span>';
+    }
+}
+
+updateLivesDisplay(); // Call the function to display initial lives
 
 // Main game loop
 function gameLoop(timestamp) {
