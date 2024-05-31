@@ -1,7 +1,7 @@
 let sequence = [];
 let currentIndex = 0;
 let timer; // variabel untuk menyimpan timer
-let timeLeft = 10; // variabel untuk menyimpan waktu yang tersisa
+let timeLeft = 20; // variabel untuk menyimpan waktu yang tersisa
 let score = 0; // variabel untuk menyimpan skor
 
 function generateSequence(length) {
@@ -55,7 +55,7 @@ function startGame() {
 
     // Memulai timer hanya jika belum dimulai sebelumnya
     if (!timer) {
-        timeLeft = 10;
+        timeLeft = 20;
         document.getElementById('timer-countdown').textContent = timeLeft;
         timer = setInterval(() => {
             timeLeft--;
@@ -96,6 +96,43 @@ function startGame() {
 //     }
 // }
 
+// function checkNumber(button, number) {
+//     if (button.classList.contains('clicked')) {
+//         return; // Jika tombol sudah diklik, keluar dari fungsi
+//     }
+
+//     if (number === sequence[currentIndex]) {
+//         currentIndex++;
+//         button.classList.add('clicked'); // Tambahkan kelas clicked pada tombol yang sudah diklik
+
+//         if (currentIndex === sequence.length) {
+//             score += 100; // Tambah skor jika urutan benar
+//             document.getElementById('score').textContent = 'Score: ' + score; // Update tampilan skor
+//             // document.getElementById('message').textContent = 'Selamat! Anda telah menyelesaikan urutan!';
+//             document.getElementById('start-button').disabled = false;
+//             setTimeout(() => {
+//                 startGame(); // Memulai permainan baru setelah sejumlah waktu tertentu
+//             }, 100);
+//         }
+//     } else {
+//         document.getElementById('message').textContent = 'Maaf, urutan salah. Silakan coba lagi.';
+//         currentIndex = 0;
+
+//         // Menghapus kelas clicked dari semua tombol
+//         document.querySelectorAll('.number-button').forEach(button => {
+//             button.classList.remove('clicked');
+//             button.disabled = true; // Menonaktifkan tombol angka saat urutan salah
+//         });
+
+//         // Set timer ke 0
+//         timeLeft = 0;
+//         document.getElementById('timer-countdown').textContent = timeLeft;
+
+//         // Munculkan tombol "Restart Game"
+//         document.getElementById('restart-button').style.display = 'block';
+//         document.getElementById('restart-button').classList.add('centered'); // Posisikan tombol "Restart Game" ke tengah
+//     }
+// }
 function checkNumber(button, number) {
     if (button.classList.contains('clicked')) {
         return; // Jika tombol sudah diklik, keluar dari fungsi
@@ -108,7 +145,10 @@ function checkNumber(button, number) {
         if (currentIndex === sequence.length) {
             score += 100; // Tambah skor jika urutan benar
             document.getElementById('score').textContent = 'Score: ' + score; // Update tampilan skor
-            // document.getElementById('message').textContent = 'Selamat! Anda telah menyelesaikan urutan!';
+            if (score % 500 === 0) { // Periksa apakah skor adalah kelipatan dari 500
+                timeLeft += 20; // Tambahkan 20 detik ke timer
+                document.getElementById('timer-countdown').textContent = timeLeft; // Update tampilan timer
+            }
             document.getElementById('start-button').disabled = false;
             setTimeout(() => {
                 startGame(); // Memulai permainan baru setelah sejumlah waktu tertentu
@@ -133,6 +173,7 @@ function checkNumber(button, number) {
         document.getElementById('restart-button').classList.add('centered'); // Posisikan tombol "Restart Game" ke tengah
     }
 }
+
 
 
 function endGame() {
