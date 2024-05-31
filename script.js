@@ -81,24 +81,44 @@ function updatePlayer() {
     }
 }
 
-// Variabel untuk menyimpan posisi sentuhan awal
+// Variabel untuk menyimpan posisi awal sentuhan
 let touchStartX = null;
 
-// Event listener untuk menangani pergerakan dengan sentuhan saat layar disentuh
+// Event listener untuk menangani pergerakan pemain dengan menahan dan menggeser sentuhan
 canvas.addEventListener("touchstart", (event) => {
-    touchStartX = event.touches[0].clientX; // Tetapkan posisi sentuhan awal
+    touchStartX = event.touches[0].clientX; // Simpan posisi awal sentuhan
+});
 
-    // Tentukan arah pergerakan berdasarkan posisi sentuhan
-    if (touchStartX < canvas.width / 2) {
-        // Sentuhan di sebelah kiri, gerak ke kiri
-        leftPressed = true;
-        rightPressed = false;
-    } else {
-        // Sentuhan di sebelah kanan, gerak ke kanan
-        leftPressed = false;
-        rightPressed = true;
+canvas.addEventListener("touchmove", (event) => {
+    // Hanya lanjutkan jika sudah ada posisi awal sentuhan
+    if (touchStartX !== null) {
+        // Hitung perubahan posisi jari dibandingkan dengan posisi awal sentuhan
+        const touchMoveX = event.touches[0].clientX;
+        const touchDeltaX = touchMoveX - touchStartX;
+
+        // Sesuaikan posisi pemain berdasarkan perubahan posisi jari
+        if (touchDeltaX > 0) {
+            // Gerak ke kanan
+            rightPressed = true;
+            leftPressed = false;
+        } else {
+            // Gerak ke kiri
+            leftPressed = true;
+            rightPressed = false;
+        }
     }
 });
+
+// Event listener untuk menghentikan pergerakan saat layar dilepas
+canvas.addEventListener("touchend", () => {
+    // Reset variabel pergerakan saat layar dilepas
+    leftPressed = false;
+    rightPressed = false;
+
+    // Reset posisi awal sentuhan
+    touchStartX = null;
+});
+
 
 // Event listener untuk menghentikan pergerakan saat layar dilepas
 canvas.addEventListener("touchend", () => {
