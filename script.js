@@ -51,19 +51,20 @@ function startGame() {
     createButtons();
     currentIndex = 0;
     document.getElementById('message').textContent = '';
-    document.getElementById('score').textContent = 'Score: ' + score; // Tampilkan skor saat memulai permainan
+    document.getElementById('score').textContent = 'Score: ' + score;
 
-    // Mulai timer 10 detik
-    timeLeft = 10; // Reset waktu
-    document.getElementById('timer-countdown').textContent = timeLeft; // Update tampilan timer
-    clearInterval(timer); // Pastikan timer dihentikan sebelum dimulai kembali
-    timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById('timer-countdown').textContent = timeLeft; // Update tampilan timer
-        if (timeLeft <= 0) {
-            endGame();
-        }
-    }, 1000);
+    // Memulai timer hanya jika belum dimulai sebelumnya
+    if (!timer) {
+        timeLeft = 10;
+        document.getElementById('timer-countdown').textContent = timeLeft;
+        timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer-countdown').textContent = timeLeft; // Update tampilan timer
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }, 1000);
+    }
 }
 
 // function checkNumber(button, number) {
@@ -107,11 +108,11 @@ function checkNumber(button, number) {
         if (currentIndex === sequence.length) {
             score += 100; // Tambah skor jika urutan benar
             document.getElementById('score').textContent = 'Score: ' + score; // Update tampilan skor
-            document.getElementById('message').textContent = 'Selamat! Anda telah menyelesaikan urutan!';
+            // document.getElementById('message').textContent = 'Selamat! Anda telah menyelesaikan urutan!';
             document.getElementById('start-button').disabled = false;
             setTimeout(() => {
                 startGame(); // Memulai permainan baru setelah sejumlah waktu tertentu
-            }, 1000);
+            }, 100);
         }
     } else {
         document.getElementById('message').textContent = 'Maaf, urutan salah. Silakan coba lagi.';
@@ -136,9 +137,10 @@ function checkNumber(button, number) {
 
 function endGame() {
     clearInterval(timer); // Hentikan timer
-    setTimeout(() => {
-        document.getElementById('message').textContent = 'Game Over!';
-    }, 3000); // Waktu tunggu sebelum menampilkan pesan (dalam milidetik)
+    timer = null; // Set timer kembali ke null
+    // setTimeout(() => {
+    //     document.getElementById('message').textContent = 'Game Over!';
+    // }, 3000); // Waktu tunggu sebelum menampilkan pesan (dalam milidetik)
     document.getElementById('restart-button').style.display = 'block'; // Tampilkan kembali tombol "Restart Game"
     document.getElementById('restart-button').classList.add('centered'); // Posisikan tombol ke tengah
     // Menghapus atribut disabled dari tombol "Mulai Game"
@@ -146,7 +148,6 @@ function endGame() {
     // Menonaktifkan semua tombol
     document.querySelectorAll('.number-button').forEach(button => {
         button.disabled = true;
-
     });
 }
 
