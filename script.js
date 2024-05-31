@@ -55,6 +55,7 @@ function startGame() {
     currentIndex = 0;
     document.getElementById('message').textContent = '';
     document.getElementById('score').textContent = 'Score: ' + score;
+    document.getElementById('guide').textContent = '';
 
     // Memulai timer hanya jika belum dimulai sebelumnya
     if (!timer) {
