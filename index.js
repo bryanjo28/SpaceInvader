@@ -12,7 +12,7 @@ canvas.height = window.innerHeight;
 console.log(scoreEl)
 
 let touchStartX = null; // Simpan posisi sentuhan awal
-const swipeThreshold = 50; // Ambang batas untuk menganggap gerakan sebagai swipe
+const swipeThreshold = 20; // Ambang batas untuk menganggap gerakan sebagai swipe
 
 // Tangani peristiwa sentuhan
 canvas.addEventListener("touchstart", (event) => {
