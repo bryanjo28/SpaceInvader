@@ -81,47 +81,40 @@ function updatePlayer() {
     }
 }
 
-// Player movement variables
+// Variabel untuk menyimpan posisi sentuhan awal
 let touchStartX = null;
 
-// Touch event listeners
-canvas.addEventListener('touchstart', handleTouchStart, false);
-canvas.addEventListener('touchmove', handleTouchMove, false);
-canvas.addEventListener('touchend', handleTouchEnd, false);
+// Event listener untuk menangani pergerakan dengan sentuhan saat layar disentuh
+canvas.addEventListener("touchstart", (event) => {
+    touchStartX = event.touches[0].clientX; // Tetapkan posisi sentuhan awal
 
-// Handle touch start event
-function handleTouchStart(event) {
-    touchStartX = event.touches[0].clientX;
-}
-
-// Handle touch move event
-function handleTouchMove(event) {
-    event.preventDefault(); // Prevent scrolling while swiping
-}
-
-// Handle touch end event
-function handleTouchEnd(event) {
-    if (!touchStartX) return;
-
-    const touchEndX = event.changedTouches[0].clientX;
-    const swipeDistance = touchEndX - touchStartX;
-
-    // Determine if swipe is significant enough
-    if (Math.abs(swipeDistance) > 50) {
-        if (swipeDistance > 0) {
-            // Swipe right
-            rightPressed = true;
-            leftPressed = false;
-        } else {
-            // Swipe left
-            rightPressed = false;
-            leftPressed = true;
-        }
+    // Tentukan arah pergerakan berdasarkan posisi sentuhan
+    if (touchStartX < canvas.width / 2) {
+        // Sentuhan di sebelah kiri, gerak ke kiri
+        leftPressed = true;
+        rightPressed = false;
+    } else {
+        // Sentuhan di sebelah kanan, gerak ke kanan
+        leftPressed = false;
+        rightPressed = true;
     }
+});
 
-    // Reset touch start position
+// Event listener untuk menghentikan pergerakan saat layar dilepas
+canvas.addEventListener("touchend", () => {
+    // Reset variabel pergerakan saat layar dilepas
+    leftPressed = false;
+    rightPressed = false;
+
+    // Reset posisi sentuhan awal
     touchStartX = null;
-}
+});
+
+// Event listener untuk mengatur pemain berdasarkan tombol keyboard
+document.addEventListener('keydown', keyDownHandler);
+document.addEventListener('keyup', keyUpHandler);
+
+// Fungsi-fungsi keyDownHandler dan keyUpHandler tidak perlu diubah
 
 // Generate a random circle
 function generateCircle() {
