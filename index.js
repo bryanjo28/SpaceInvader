@@ -12,37 +12,39 @@ canvas.height = window.innerHeight;
 console.log(scoreEl)
 
 let touchStartX = null; // Simpan posisi sentuhan awal
-const swipeThreshold = 50; // Ambang batas untuk menganggap gerakan sebagai swipe
+let touchMoveX = null; // Simpan posisi sentuhan saat ini
 
-// Tangani peristiwa sentuhan
 canvas.addEventListener("touchstart", (event) => {
-	touchStartX = event.touches[0].clientX; // Simpan posisi sentuhan awal
+    touchStartX = event.touches[0].clientX; // Simpan posisi sentuhan awal
 });
 
 canvas.addEventListener("touchmove", (event) => {
-	if (touchStartX === null) return; // Jika tidak ada sentuhan awal, keluar dari fungsi
-	const touchMoveX = event.touches[0].clientX; // Ambil posisi sentuhan saat ini
-	const swipeDistance = touchMoveX - touchStartX; // Hitung pergeseran horizontal
-
-	// Geser karakter berdasarkan pergeseran, misalnya:
-	if (swipeDistance > swipeThreshold) {
-		// Geser ke kanan
-		keys.a.pressed = false;
-		keys.d.pressed = true;
-	} else if (swipeDistance < -swipeThreshold) {
-		// Geser ke kiri
-		keys.a.pressed = true;
-		keys.d.pressed = false;
-	}
+    if (touchStartX === null) return; // Jika tidak ada sentuhan awal, keluar dari fungsi
+    touchMoveX = event.touches[0].clientX; // Ambil posisi sentuhan saat ini
 });
 
 canvas.addEventListener("touchend", () => {
-	touchStartX = null; // Reset posisi sentuhan awal saat sentuhan berakhir
-	// Berhenti menggerakkan karakter saat sentuhan berakhir
-	keys.a.pressed = false;
-	keys.d.pressed = false;
+    touchStartX = null; // Reset posisi sentuhan awal saat sentuhan berakhir
+    // Berhenti menggerakkan karakter saat sentuhan berakhir
+    keys.a.pressed = false;
+    keys.d.pressed = false;
 });
 
+// Di dalam fungsi animate():
+// Ganti logika untuk menentukan gerakan ke kiri atau ke kanan berdasarkan pergeseran horizontal
+// Geser karakter berdasarkan pergeseran, misalnya:
+if (touchMoveX !== null) {
+    const swipeDistance = touchMoveX - touchStartX; // Hitung pergeseran horizontal
+    if (swipeDistance > swipeThreshold) {
+        // Geser ke kanan
+        keys.a.pressed = false;
+        keys.d.pressed = true;
+    } else if (swipeDistance < -swipeThreshold) {
+        // Geser ke kiri
+        keys.a.pressed = true;
+        keys.d.pressed = false;
+    }
+}
 
 class Player {
 	constructor() {
@@ -415,8 +417,6 @@ function animate() {
 				// Memperbarui skor di overlay
 				const scoreDisplay = document.getElementById("gameOverScore");
 				scoreDisplay.innerText = ` ${score}`;
-				// Memainkan suara tembakan
-				gameOverSound.play();
 			}, 1000);
 
 			createParticles({
