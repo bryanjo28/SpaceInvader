@@ -1,16 +1,19 @@
 let sequence = [];
 let currentIndex = 0;
 let timer; // variabel untuk menyimpan timer
-let timeLeft = 20; // variabel untuk menyimpan waktu yang tersisa
+let timeLeft = 15; // variabel untuk menyimpan waktu yang tersisa
 let score = 0; // variabel untuk menyimpan skor
 
 function generateSequence(length) {
     sequence = [];
-    for (let i = 0; i < length; i++) {
+    while (sequence.length < length) {
         let randomNumber = Math.floor(Math.random() * 10); // Generate random number between 0 to 9
-        sequence.push(randomNumber);
+        if (!sequence.includes(randomNumber)) {
+            sequence.push(randomNumber);
+        }
     }
 }
+
 
 function displaySequence() {
     const numberSequenceElement = document.getElementById('number-sequence');
@@ -55,7 +58,7 @@ function startGame() {
 
     // Memulai timer hanya jika belum dimulai sebelumnya
     if (!timer) {
-        timeLeft = 20;
+        timeLeft = 15;
         document.getElementById('timer-countdown').textContent = timeLeft;
         timer = setInterval(() => {
             timeLeft--;
@@ -146,7 +149,7 @@ function checkNumber(button, number) {
             score += 100; // Tambah skor jika urutan benar
             document.getElementById('score').textContent = 'Score: ' + score; // Update tampilan skor
             if (score % 500 === 0) { // Periksa apakah skor adalah kelipatan dari 500
-                timeLeft += 20; // Tambahkan 20 detik ke timer
+                timeLeft += 15; // Tambahkan 20 detik ke timer
                 document.getElementById('timer-countdown').textContent = timeLeft; // Update tampilan timer
             }
             document.getElementById('start-button').disabled = false;
