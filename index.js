@@ -2,6 +2,7 @@ const canvas = document.querySelector("canvas");
 const scoreEl = document.querySelector("#score");
 const gameOverOverlay = document.getElementById("gameOverOverlay"); // Mendapatkan elemen overlay game over
 const restartButton = document.getElementById("restartButton"); // Mendapatkan tombol restart
+// Memperbarui skor di overlay
 
 const c = canvas.getContext("2d");
 canvas.width = window.innerWidth;
@@ -411,11 +412,13 @@ function animate() {
 			setTimeout(() => {
 				game.active = false,
 					gameOverOverlay.classList.add("active"); // Menampilkan overlay game over
+				// Memperbarui skor di overlay
+				const scoreDisplay = document.getElementById("gameOverScore");
+				scoreDisplay.innerText = ` ${score}`;
 				// Memainkan suara tembakan
 				gameOverSound.play();
 			}, 1000);
 
-			console.log('you lose')
 			createParticles({
 				object: player,
 				color: 'white',
