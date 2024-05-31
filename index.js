@@ -12,39 +12,37 @@ canvas.height = window.innerHeight;
 console.log(scoreEl)
 
 let touchStartX = null; // Simpan posisi sentuhan awal
-let touchMoveX = null; // Simpan posisi sentuhan saat ini
+const swipeThreshold = 50; // Ambang batas untuk menganggap gerakan sebagai swipe
 
+// Tangani peristiwa sentuhan
 canvas.addEventListener("touchstart", (event) => {
-    touchStartX = event.touches[0].clientX; // Simpan posisi sentuhan awal
+	touchStartX = event.touches[0].clientX; // Simpan posisi sentuhan awal
 });
 
 canvas.addEventListener("touchmove", (event) => {
-    if (touchStartX === null) return; // Jika tidak ada sentuhan awal, keluar dari fungsi
-    touchMoveX = event.touches[0].clientX; // Ambil posisi sentuhan saat ini
+	if (touchStartX === null) return; // Jika tidak ada sentuhan awal, keluar dari fungsi
+	const touchMoveX = event.touches[0].clientX; // Ambil posisi sentuhan saat ini
+	const swipeDistance = touchMoveX - touchStartX; // Hitung pergeseran horizontal
+
+	// Geser karakter berdasarkan pergeseran, misalnya:
+	if (swipeDistance > swipeThreshold) {
+		// Geser ke kanan
+		keys.a.pressed = false;
+		keys.d.pressed = true;
+	} else if (swipeDistance < -swipeThreshold) {
+		// Geser ke kiri
+		keys.a.pressed = true;
+		keys.d.pressed = false;
+	}
 });
 
 canvas.addEventListener("touchend", () => {
-    touchStartX = null; // Reset posisi sentuhan awal saat sentuhan berakhir
-    // Berhenti menggerakkan karakter saat sentuhan berakhir
-    keys.a.pressed = false;
-    keys.d.pressed = false;
+	touchStartX = null; // Reset posisi sentuhan awal saat sentuhan berakhir
+	// Berhenti menggerakkan karakter saat sentuhan berakhir
+	keys.a.pressed = false;
+	keys.d.pressed = false;
 });
 
-// Di dalam fungsi animate():
-// Ganti logika untuk menentukan gerakan ke kiri atau ke kanan berdasarkan pergeseran horizontal
-// Geser karakter berdasarkan pergeseran, misalnya:
-if (touchMoveX !== null) {
-    const swipeDistance = touchMoveX - touchStartX; // Hitung pergeseran horizontal
-    if (swipeDistance > swipeThreshold) {
-        // Geser ke kanan
-        keys.a.pressed = false;
-        keys.d.pressed = true;
-    } else if (swipeDistance < -swipeThreshold) {
-        // Geser ke kiri
-        keys.a.pressed = true;
-        keys.d.pressed = false;
-    }
-}
 
 class Player {
 	constructor() {
@@ -417,6 +415,8 @@ function animate() {
 				// Memperbarui skor di overlay
 				const scoreDisplay = document.getElementById("gameOverScore");
 				scoreDisplay.innerText = ` ${score}`;
+				// Memainkan suara tembakan
+				gameOverSound.play();
 			}, 1000);
 
 			createParticles({
@@ -531,48 +531,48 @@ function animate() {
 animate();
 
 addEventListener("keydown", ({ key }) => {
-	if (game.over) return
+    if (game.over) return;
 
-	switch (key) {
-		case "a":
-			console.log("left");
-			keys.a.pressed = true;
-			break;
-		case "d":
-			console.log("right");
-			keys.d.pressed = true;
-			break;
-		case " ":
-			console.log("space");
-			console.log(projectiles);
-			projectiles.push(
-				new Projectile({
-					position: {
-						x: player.position.x + player.width / 2,
-						y: player.position.y,
-					},
-					velocity: {
-						x: 0,
-						y: -10,
-					},
-				})
-			);
-			break;
-	}
+    switch (key) {
+        case "a":
+            console.log("left");
+            keys.a.pressed = true;
+            break;
+        case "d":
+            console.log("right");
+            keys.d.pressed = true;
+            break;
+        case " ":
+            console.log("space");
+            console.log(projectiles);
+            projectiles.push(
+                new Projectile({
+                    position: {
+                        x: player.position.x + player.width / 2,
+                        y: player.position.y,
+                    },
+                    velocity: {
+                        x: 0,
+                        y: -10,
+                    },
+                })
+            );
+            break;
+    }
 });
 
 addEventListener("keyup", ({ key }) => {
-	switch (key) {
-		case "a":
-			console.log("left");
-			keys.a.pressed = false;
-			break;
-		case "d":
-			console.log("right");
-			keys.d.pressed = false;
-			break;
-		case " ":
-			console.log("space");
-			break;
-	}
+    switch (key) {
+        case "a":
+            console.log("left");
+            keys.a.pressed = false;
+            break;
+        case "d":
+            console.log("right");
+            keys.d.pressed = false;
+            break;
+        case " ":
+            console.log("space");
+            break;
+    }
 });
