@@ -3,29 +3,93 @@ body {
     font-family: Arial, sans-serif;
 }
 
+/* Styles untuk container utama */
 #container {
     text-align: center;
     margin-top: 50px;
-}
-
-#start-button {
-    display: block;
-    margin: auto; /* Posisikan tombol ke tengah */
-}
-
-#number-sequence {
-    font-size: 24px;
+  }
+  
+  /* Styles untuk judul game */
+  h1 {
+    font-size: 2em;
+    color: #333;
+  }
+  
+  /* Styles untuk timer */
+  #timer {
+    font-size: 1.2em;
     margin-bottom: 20px;
-}
-
-.number-button {
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
+  }
+  
+  /* Styles untuk urutan angka */
+  #number-sequence {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  /* Styles untuk tombol urutan angka */
+  .number-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
     margin: 5px;
-    background-color: #ffffff; /* Warna latar belakang default */
-    transition: background-color 0.3s ease; /* Efek transisi */
-}
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .number-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Styles untuk tombol mulai dan restart game */
+  #start-button, #restart-button {
+    display: block;
+    margin: auto;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+  }
+  
+  #start-button:hover, #restart-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Styles untuk skor */
+  #score {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+  
+  /* Styles untuk pesan */
+  #message {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #dc3545;
+    margin-top: 20px;
+  }
+  
+  /* Styles untuk petunjuk bermain */
+  #guide {
+    font-size: 1em;
+    margin-top: 20px;
+    color: #6c757d;
+  }
+  
+  /* Styles untuk container tombol */
+  #button-container {
+    margin-bottom: 20px;
+  }
+  
 
 /* Efek hover */
 .number-button:hover:not(.clicked) {

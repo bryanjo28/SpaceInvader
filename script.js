@@ -185,7 +185,7 @@ function endGame() {
     timer = null; // Set timer kembali ke null
     // setTimeout(() => {
     //     document.getElementById('message').textContent = 'Game Over!';
-    // }, 3000); // Waktu tunggu sebelum menampilkan pesan (dalam milidetik)
+    // }, 1000); // Waktu tunggu sebelum menampilkan pesan (dalam milidetik)
     document.getElementById('restart-button').style.display = 'block'; // Tampilkan kembali tombol "Restart Game"
     document.getElementById('restart-button').classList.add('centered'); // Posisikan tombol ke tengah
     // Menghapus atribut disabled dari tombol "Mulai Game"
