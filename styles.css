@@ -11,7 +11,7 @@ canvas {
 }
 
 #gameCanvas {
-    background-image: url('background1.png');
+    background-image: url('background2.png');
     background-size: cover;
 }
 /* style.css */
@@ -55,4 +55,20 @@ canvas {
     height: 40px;
     background-image: url('heart.png'); /* Use heart.png as background image */
     background-size: cover;; /* Add margin for spacing */
+    margin-top: 10px;
+    padding-top: 25px;
+}
+
+ /* Additional CSS to center the score */
+ #scoreContainer {
+    position: fixed;
+    z-index: 10;
+    color: black;
+    left: 50%;
+    top: 35px;
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    transform: translateX(-50%);
 }

@@ -1,5 +1,3 @@
-// game.js
-
 // Get the canvas and its context
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -7,7 +5,6 @@ const scoreEl = document.querySelector("#score");
 const time = document.querySelector("#timer");
 const livesContainer = document.querySelector("#lives");
 const gameOverDialog = document.querySelector("#gameOverDialog");
-
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -19,26 +16,31 @@ const player = {
     width: 130,
     height: 130,
     speed: 5
+    
 };
 
 // Circles array
 const circles = [];
 const circleRadius = 15;
 const maxCircleSpeed = 5;
-const blueCircleSpawnRate = 0.4;
 const maxLives = 3; // Maximum number of lives
 
-// Load the image for the red circle
-const image = new Image();
-image.src = 'money.png';
+// Load images
+const images = [
+    { src: 'money1.png', points: 1000, spawnRate: 0.06 },
+    { src: 'money2.png', points: 500, spawnRate: 0.07 },
+    { src: 'money3.png', points: 200, spawnRate: 0.09 },
+    { src: 'money4.png', points: 100, spawnRate: 0.05 },
+    { src: 'bomb2.png', points: -200, spawnRate: 0.08 } 
+];
 
 // Load bomb image
-const image2 = new Image()
-image2.src = 'bomb.png'
+const image2 = new Image();
+image2.src = 'bomb2.png';
 
 // Load the image for the player
 const playerImage = new Image();
-playerImage.src = 'box.png';
+playerImage.src = 'wallet.png';
 
 // Load heart image
 const heartImage = new Image();
@@ -81,64 +83,50 @@ function updatePlayer() {
     }
 }
 
-// Variabel untuk menyimpan posisi awal sentuhan
+// Variable for storing initial touch position
 let touchStartX = null;
 
-// Event listener untuk menangani pergerakan pemain dengan menahan dan menggeser sentuhan
+// Event listener for handling player movement by holding and swiping touch
 canvas.addEventListener("touchstart", (event) => {
-    touchStartX = event.touches[0].clientX; // Simpan posisi awal sentuhan
+    touchStartX = event.touches[0].clientX; // Save initial touch position
 });
 
 canvas.addEventListener("touchmove", (event) => {
-    // Hanya lanjutkan jika sudah ada posisi awal sentuhan
+    // Only continue if there is an initial touch position
     if (touchStartX !== null) {
-        // Hitung perubahan posisi jari dibandingkan dengan posisi awal sentuhan
+        // Calculate the change in finger position compared to the initial touch position
         const touchMoveX = event.touches[0].clientX;
         const touchDeltaX = touchMoveX - touchStartX;
 
-        // Sesuaikan posisi pemain berdasarkan perubahan posisi jari
+        // Adjust player position based on change in finger position
         if (touchDeltaX > 0) {
-            // Gerak ke kanan
+            // Move to the right
             rightPressed = true;
             leftPressed = false;
         } else {
-            // Gerak ke kiri
+            // Move to the left
             leftPressed = true;
             rightPressed = false;
         }
     }
 });
 
-// Event listener untuk menghentikan pergerakan saat layar dilepas
+// Event listener to stop movement when the screen is released
 canvas.addEventListener("touchend", () => {
-    // Reset variabel pergerakan saat layar dilepas
+    // Reset movement variables when the screen is released
     leftPressed = false;
     rightPressed = false;
 
-    // Reset posisi awal sentuhan
+    // Reset initial touch position
     touchStartX = null;
 });
-
-
-// Event listener untuk menghentikan pergerakan saat layar dilepas
-canvas.addEventListener("touchend", () => {
-    // Reset variabel pergerakan saat layar dilepas
-    leftPressed = false;
-    rightPressed = false;
-
-    // Reset posisi sentuhan awal
-    touchStartX = null;
-});
-
-// Event listener untuk mengatur pemain berdasarkan tombol keyboard
-document.addEventListener('keydown', keyDownHandler);
-document.addEventListener('keyup', keyUpHandler);
-
-// Fungsi-fungsi keyDownHandler dan keyUpHandler tidak perlu diubah
 
 // Generate a random circle
 function generateCircle() {
-    const isBlue = Math.random() < blueCircleSpawnRate;
+    let randomImage;
+    while (!randomImage) {
+        randomImage = images.find(image => Math.random() < image.spawnRate);
+    }
     const x = Math.random() * (canvas.width - circleRadius * 2) + circleRadius;
     const y = -circleRadius;
     const speed = Math.random() * maxCircleSpeed + 1;
@@ -146,13 +134,10 @@ function generateCircle() {
         x,
         y,
         speed,
-        isBlue
+        image: new Image(),
+        points: randomImage.points
     };
-    if (isBlue) {
-        circle.image = image2;
-    } else {
-        circle.image = image;
-    }
+    circle.image.src = randomImage.src;
     circles.push(circle);
 }
 
@@ -171,9 +156,9 @@ function updateCircles(deltaTime) {
         ) {
             circles.splice(i, 1);
             i--;
-            if (!circle.isBlue) {
+            if (circle.image.src !== image2.src) {
                 coinSound.play();
-                score += 100;
+                score += circle.points;
             } else {
                 bombSound.play();
                 lives--; // Reduce lives if hit a bomb
@@ -205,8 +190,8 @@ function drawPlayer() {
 // Draw circles
 function drawCircles() {
     for (const circle of circles) {
-        const imageWidth = circleRadius * 8; // Adjust the multiplier as needed
-        const imageHeight = circleRadius * 8; // Keep aspect ratio
+        const imageWidth = circleRadius * 10; // Adjust the multiplier as needed
+        const imageHeight = circleRadius * 10; // Keep aspect ratio
         ctx.drawImage(circle.image, circle.x - imageWidth / 2, circle.y - imageHeight / 2, imageWidth, imageHeight);
     }
 }
