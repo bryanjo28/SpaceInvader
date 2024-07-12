@@ -21,69 +21,92 @@
 			width: 100%;
 			height: 100%;
 			background-color: rgba(0, 0, 0, 0.5);
-			/* Warna latar belakang semi-transparan */
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			z-index: 999;
-			/* Z-index tinggi untuk menampilkan di atas konten lain */
 			opacity: 0;
-			/* Mulai dengan opasitas nol */
 			visibility: hidden;
-			/* Mulai dengan tidak terlihat */
 			transition: opacity 0.3s, visibility 0s 0.3s;
-			/* Transisi untuk efek muncul */
 		}
 
 		.overlay.active {
 			opacity: 1;
-			/* Munculkan dengan opasitas penuh */
 			visibility: visible;
-			/* Jadikan terlihat */
 			transition: opacity 0.3s, visibility 0s;
-			/* Transisi saat aktif */
 		}
 
 		.overlay-content {
-			background-color: #ffffff;
-			/* Warna latar belakang */
-			padding: 20px;
-			/* Padding untuk konten */
+			position: relative;
+			width: 80%;
+			max-width: 600px;
+			height: 300px;
+			background-image: url('./game_over.png');
+			background-size: cover;
+			background-position: center;
 			border-radius: 10px;
-			/* Border radius sudut */
-			text-align: center;
-			/* Teks rata tengah */
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			align-items: center;
+			padding-bottom: 50px;
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-			/* Efek bayangan */
+			color: white;
 		}
 
-		.overlay h2 {
-			margin-top: 0;
-			/* Hilangkan margin atas */
+		.overlay-content p {
+			margin: 0;
+			padding: 10px;
+			border-radius: 10px;
+			width: 100%;
+			text-align: center;
 		}
 
 		.overlay button {
 			padding: 10px 20px;
-			/* Padding untuk tombol */
 			font-size: 16px;
-			/* Ukuran teks tombol */
 			background-color: blue;
-			/* Warna latar tombol */
 			color: #ffffff;
-			/* Warna teks tombol */
 			border: none;
-			/* Hapus border */
 			border-radius: 5px;
-			/* Border radius sudut */
 			cursor: pointer;
-			/* Ubah cursor saat dihover */
 			transition: background-color 0.3s;
-			/* Transisi saat dihover */
+			margin-top: 20px;
 		}
 
 		.overlay button:hover {
-			background-color: blue;
-			/* Ubah warna latar saat dihover */
+			background-color: darkblue;
+		}
+
+		#score-container {
+			position: fixed;
+			z-index: 10;
+			color: white;
+			right: 10px;
+			top: 10px;
+			margin: 0;
+			font-family: sans-serif;
+			font-size: 14px;
+		}
+		#meteor {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100px;
+			height: auto;
+			z-index: 1000;
+			animation: fall 5s linear infinite;
+		}
+
+		@keyframes fall {
+			0% {
+				top: -100px;
+				left: -100px;
+			}
+			100% {
+				top: 100vh;
+				left: 100vw;
+			}
 		}
 	</style>
 </head>
@@ -91,14 +114,16 @@
 <body>
 	<div class="overlay" id="gameOverOverlay">
 		<div class="overlay-content">
-			<h2>Game Over</h2>
-      <p>Score: <span id="gameOverScore">0</span></p>
+			<br>
+			<p>Score: <span id="gameOverScore">0</span></p>
 			<button onclick="restartGame()">Restart</button>
 		</div>
 	</div>
+	<!-- Meteor GIF -->
+	<img id="meteor" src="./meteor.gif" alt="Meteor GIF">
 
-	<p style="position: fixed; z-index: 10; color: white; left: 10px; top: 10px; margin: 0;
-			font-family: sans-serif; font-size: 14px; "><span>Score:</span><span id="score">0</span></p>
+	<p id="score-container"><span>Score:</span><span id="score">0</span></p>
+
 	<canvas></canvas>
 	<script src="./index.js"></script>
 	<audio id="backgroundMusic" autoplay loop>
@@ -120,6 +145,48 @@
 			const backgroundMusic = document.getElementById("backgroundMusic");
 			backgroundMusic.volume = 0.5;
 		});
+
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+
+		function animateMeteor() {
+			const meteor = document.getElementById('meteor');
+			const startX = getRandomInt(0, window.innerWidth - 100);
+			const duration = getRandomInt(3, 10);
+
+			meteor.style.left = `${startX}px`;
+			meteor.style.top = '-100px';
+			meteor.style.transition = `top ${duration}s linear`;
+
+			setTimeout(() => {
+				meteor.style.top = '100vh';
+			}, 100); // Start the animation after setting the position
+
+			meteor.addEventListener('transitionend', () => {
+				const newStartX = getRandomInt(0, window.innerWidth - 100);
+				const newDuration = getRandomInt(3, 10);
+
+				meteor.style.left = `${newStartX}px`;
+				meteor.style.top = '-100px';
+				meteor.style.transition = `top ${newDuration}s linear`;
+
+				setTimeout(() => {
+					meteor.style.top = '100vh';
+				}, 100); // Start the animation after setting the position
+			});
+		}
+
+		function gameOver() {
+			const gameOverOverlay = document.getElementById('gameOverOverlay');
+			const meteor = document.getElementById('meteor');
+			meteor.style.animation = "none"; // Stop the animation
+			gameOverOverlay.classList.add('active');
+			backgroundMusic.pause();
+			gameOverSound.play();
+		}
+
+		animateMeteor();
 	</script>
 
 </body>

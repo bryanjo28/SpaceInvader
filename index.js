@@ -11,6 +11,11 @@ canvas.height = window.innerHeight;
 
 console.log(scoreEl)
 
+// Load the background image
+const backgroundImage = new Image();
+backgroundImage.src = './background_space.png';
+
+
 let touchStartX = null; // Simpan posisi sentuhan awal
 const swipeThreshold = 20; // Ambang batas untuk menganggap gerakan sebagai swipe
 
@@ -54,7 +59,7 @@ class Player {
 		this.rotation = 0;
 		this.opacity = 1;
 		const image = new Image();
-		image.src = "./spaceship.png";
+		image.src = "./spaceship2.png";
 		image.onload = () => {
 			const scale = 0.15;
 			this.image = image;
@@ -113,12 +118,12 @@ class Projectile {
 	draw() {
 		c.beginPath();
 		c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
-		c.fillStyle = "red";
+		c.fillStyle = "blue";
 		c.fill();
 		c.closePath();
 	}
 
-	update() {
+	update() {7
 		this.draw();
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
@@ -166,7 +171,7 @@ class InvaderProjectile {
 		this.height = 10;
 	}
 	draw() {
-		c.fillStyle = "white";
+		c.fillStyle = "red";
 		c.fillRect(this.position.x, this.position.y, this.width, this.height);
 	}
 
@@ -186,9 +191,9 @@ class Invader {
 		};
 
 		const image = new Image();
-		image.src = "./invader.png";
+		image.src = "./invader3.png";
 		image.onload = () => {
-			const scale = 1;
+			const scale = 0.8;
 			this.image = image;
 			this.width = image.width * scale;
 			this.height = image.height * scale;
@@ -367,12 +372,15 @@ function autoShoot() {
 // Mengatur interval tembakan otomatis
 const autoShootInterval = setInterval(autoShoot, 500);
 
+
 //fungsi animasi
 function animate() {
 	if (!game.active) return
 	requestAnimationFrame(animate);
-	c.fillStyle = "black";
-	c.fillRect(0, 0, canvas.width, canvas.height);
+	// c.fillStyle = "black";
+	// c.fillRect(0, 0, canvas.width, canvas.height);
+	 // Draw background image
+	 c.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 	player.update();
 	particles.forEach((particle, i) => {
 		if (particle.position.y - particle.radius >= canvas.height) {
