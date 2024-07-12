@@ -123,7 +123,8 @@ class Projectile {
 		c.closePath();
 	}
 
-	update() {7
+	update() {
+		7
 		this.draw();
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
@@ -379,8 +380,8 @@ function animate() {
 	requestAnimationFrame(animate);
 	// c.fillStyle = "black";
 	// c.fillRect(0, 0, canvas.width, canvas.height);
-	 // Draw background image
-	 c.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+	// Draw background image
+	c.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 	player.update();
 	particles.forEach((particle, i) => {
 		if (particle.position.y - particle.radius >= canvas.height) {
@@ -425,6 +426,8 @@ function animate() {
 				scoreDisplay.innerText = ` ${score}`;
 				// Memainkan suara tembakan
 				gameOverSound.play();
+				const meteor = document.getElementById('meteor');
+				meteor.style.animation = "none"; // Stop the animation
 			}, 1000);
 
 			createParticles({
@@ -539,48 +542,48 @@ function animate() {
 animate();
 
 addEventListener("keydown", ({ key }) => {
-    if (game.over) return;
+	if (game.over) return;
 
-    switch (key) {
-        case "a":
-            console.log("left");
-            keys.a.pressed = true;
-            break;
-        case "d":
-            console.log("right");
-            keys.d.pressed = true;
-            break;
-        case " ":
-            console.log("space");
-            console.log(projectiles);
-            projectiles.push(
-                new Projectile({
-                    position: {
-                        x: player.position.x + player.width / 2,
-                        y: player.position.y,
-                    },
-                    velocity: {
-                        x: 0,
-                        y: -10,
-                    },
-                })
-            );
-            break;
-    }
+	switch (key) {
+		case "a":
+			console.log("left");
+			keys.a.pressed = true;
+			break;
+		case "d":
+			console.log("right");
+			keys.d.pressed = true;
+			break;
+		case " ":
+			console.log("space");
+			console.log(projectiles);
+			projectiles.push(
+				new Projectile({
+					position: {
+						x: player.position.x + player.width / 2,
+						y: player.position.y,
+					},
+					velocity: {
+						x: 0,
+						y: -10,
+					},
+				})
+			);
+			break;
+	}
 });
 
 addEventListener("keyup", ({ key }) => {
-    switch (key) {
-        case "a":
-            console.log("left");
-            keys.a.pressed = false;
-            break;
-        case "d":
-            console.log("right");
-            keys.d.pressed = false;
-            break;
-        case " ":
-            console.log("space");
-            break;
-    }
+	switch (key) {
+		case "a":
+			console.log("left");
+			keys.a.pressed = false;
+			break;
+		case "d":
+			console.log("right");
+			keys.d.pressed = false;
+			break;
+		case " ":
+			console.log("space");
+			break;
+	}
 });

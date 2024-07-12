@@ -177,14 +177,6 @@
 			});
 		}
 
-		function gameOver() {
-			const gameOverOverlay = document.getElementById('gameOverOverlay');
-			const meteor = document.getElementById('meteor');
-			meteor.style.animation = "none"; // Stop the animation
-			gameOverOverlay.classList.add('active');
-			backgroundMusic.pause();
-			gameOverSound.play();
-		}
 
 		animateMeteor();
 	</script>
