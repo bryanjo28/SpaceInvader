@@ -30,7 +30,7 @@ const images = [
     { src: 'money1.png', points: 1000, spawnRate: 0.06 },
     { src: 'money2.png', points: 500, spawnRate: 0.07 },
     { src: 'money3.png', points: 200, spawnRate: 0.09 },
-    { src: 'money4.png', points: 100, spawnRate: 0.05 },
+    { src: 'money4.png', points: 100, spawnRate: 0.09 },
     { src: 'bomb2.png', points: -200, spawnRate: 0.08 } 
 ];
 

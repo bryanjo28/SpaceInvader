@@ -2,82 +2,45 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Money Catcher</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Additional CSS to center the score */
-        #scoreContainer {
-            position: fixed;
-            z-index: 10;
-            color: black;
-            left: 50%;
-            top: 10px;
-            margin: 0;
-            font-family: sans-serif;
-            font-size: 18px;
-            font-weight: bold;
-            transform: translateX(-50%);
-        }
-
-        #lives {
-            position: fixed;
-            z-index: 10;
-            color: black;
-            top: 0px;
-            right: 0px;
-            display: flex;
-            align-items: center;
-        }
-
-        .life-icon {
-            margin-left: 5px;
-        }
-
-        .cloud-icon {
-            width: 50px; /* Adjust size as needed */
-            height: auto;
-            margin-left: 10px;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Money Catcher</title>
+	<link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <div id="gameOverDialog" class="dialog" style="display: none;">
-        <p>Game Over</p>
-        <p>Your Score: <span id="scoreDisplay">0</span></p>
-        <button onclick="restartGame()">Restart</button>
-    </div>
+	<div id="gameOverDialog" class="dialog" style="display: none;">
+		<p>Game Over</p>
+		<p>Your Score: <span id="scoreDisplay">0</span></p>
+		<button onclick="restartGame()">Restart</button>
+	</div>
 
-    <div id="scoreContainer">
-        <span>Score:</span><span id="score">0</span>
-    </div>
+	<div id="scoreContainer">
+		<span>Score:</span><span id="score">0</span>
+	</div>
+	<div id="lives">
+		<span id="life1" class="life-icon"><img src="heart.png" alt="Heart"></span>
+		<span id="life2" class="life-icon"><img src="heart.png" alt="Heart"></span>
+		<span id="life3" class="life-icon"><img src="heart.png" alt="Heart"></span>
+		<img src="awan.gif" class="cloud-icon" alt="Cloud">
+	</div>
+	<canvas id="gameCanvas"></canvas>
+	<script src="script.js"></script>
 
-    <div id="lives">
-        <span id="life1" class="life-icon"><img src="heart.png" alt="Heart"></span>
-        <span id="life2" class="life-icon"><img src="heart.png" alt="Heart"></span>
-        <span id="life3" class="life-icon"><img src="heart.png" alt="Heart"></span>
-        <img src="awan.gif" class="cloud-icon" alt="Cloud">
-    </div>
-
-    <canvas id="gameCanvas"></canvas>
-    <script src="script.js"></script>
-
-    <!-- <audio id="myAudio" autoplay loop>
+	<!-- <audio id="myAudio" autoplay loop>
         <source src="/audio/bgmusic.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio> -->
 
-    <script>
-        // function setVolume(volume) {
-        //     var audio = document.getElementById("myAudio");
-        //     audio.volume = volume;
-        // }
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     setVolume(0.9); // Mengatur volume menjadi 50% saat halaman dimuat
-        // });
-    </script>
+	<script>
+		// function setVolume(volume) {
+		//     var audio = document.getElementById("myAudio");
+		//     audio.volume = volume;
+		// }
+		// document.addEventListener("DOMContentLoaded", function () {
+		//     setVolume(0.9); // Mengatur volume menjadi 50% saat halaman dimuat
+		// });
+	</script>
 </body>
 
 </html>

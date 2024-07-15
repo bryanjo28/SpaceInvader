@@ -11,7 +11,7 @@ canvas {
 }
 
 #gameCanvas {
-    background-image: url('background2.png');
+    background-image: url('background3.png');
     background-size: cover;
 }
 /* style.css */
@@ -71,4 +71,36 @@ canvas {
     font-size: 18px;
     font-weight: bold;
     transform: translateX(-50%);
+}
+
+
+/* Additional CSS to center the score */
+#scoreContainer {
+  position: fixed;
+  z-index: 10;
+  color: black;
+  left: 50%;
+  top: 10px;
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  transform: translateX(-50%);
+}
+
+#lives {
+  position: fixed;
+  z-index: 10;
+  color: black;
+  top: 0px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+}
+
+.cloud-icon {
+  width: 50px;
+  /* Adjust size as needed */
+  height: auto;
+  margin-left: 10px;
 }
