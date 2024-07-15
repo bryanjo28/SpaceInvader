@@ -1,36 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Urutan Angka</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    /* CSS untuk tombol mulai game */
-    #start-button, #restart-button {
-        display: block;
-        margin: auto; /* Posisikan tombol ke tengah */
-    }
-  </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Game Urutan Angka</title>
+	<link rel="stylesheet" href="styles.css">
+	<style>
+		/* CSS untuk tombol mulai game */
+		#start-button,
+		#restart-button {
+			display: block;
+			margin: auto;
+			/* Posisikan tombol ke tengah */
+		}
+	</style>
 </head>
+
 <body>
-  <div id="container">
-    <div id="timer">Timer: <span id="timer-countdown">15</span> detik</div>
+	<div id="container">
+		<div class="header">
+			<div>
+			  <img src="timer.png" alt="Timer">
+			  <span id="timer-countdown">20</span> <span style="margin-left: 5px; font-weight: bold;">s</span>
+			</div>
+			
+			<div id="score">Score: 0</div> <!-- Menampilkan skor -->
+		  </div>
 
-    <div id="number-sequence"></div>
-    <div id="button-container"></div>
-    <div id="score">Score: 0</div> <!-- Menampilkan skor -->
-    <button id="start-button" onclick="startGame()">Mulai Game</button>
-    <button id="restart-button" onclick="restartGame()" style="display: none;">Restart Game</button>
-    <p id="message"></p>
+		<div id="number-sequence"></div>
+		<div id="button-container"></div>
+		<button id="start-button" onclick="startGame()" style="background-color: #2FCDD0">Mulai Game</button>
+		<button id="restart-button" onclick="restartGame()" style="display: none; background-color: #2FCDD0">Restart Game</button>
+		<p id="message"></p>
 
-    <p id="guide">Cara bermain: <br><br>
-      1. Urutan angka akan muncul di layar <br><br>
-      2. Klik button angka sesuai urutan dengan angka yang muncul <br><br>
-      3. Timer akan bertambah +15 detik setiap kelipatan skor 500
-    </p>
-  </div>
-  
-  <script src="script.js"></script>
+		<p id="guide">Cara bermain: <br><br>
+			1. Urutan angka akan muncul di layar <br><br>
+			2. Klik button angka sesuai urutan dengan angka yang muncul <br><br>
+			3. Timer akan bertambah +15 detik setiap kelipatan skor 500
+		</p>
+
+		<div class="container">
+			<img src="blu.png" alt="" style="width: 50%; margin-top: 50px;">
+		</div>
+	</div>
+	<script src="script.js"></script>
 </body>
+
 </html>

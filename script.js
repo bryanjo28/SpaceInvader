@@ -1,23 +1,27 @@
 let sequence = [];
 let currentIndex = 0;
 let timer; // variabel untuk menyimpan timer
-let timeLeft = 15; // variabel untuk menyimpan waktu yang tersisa
+let timeLeft = 20; // variabel untuk menyimpan waktu yang tersisa
 let score = 0; // variabel untuk menyimpan skor
 
 function generateSequence(length) {
     sequence = [];
     while (sequence.length < length) {
-        let randomNumber = Math.floor(Math.random() * 10); // Generate random number between 0 to 9
+        let randomNumber = Math.floor(Math.random() * 6); // Generate random number between 0 to 9
         if (!sequence.includes(randomNumber)) {
             sequence.push(randomNumber);
         }
     }
 }
 
-
 function displaySequence() {
     const numberSequenceElement = document.getElementById('number-sequence');
-    numberSequenceElement.textContent = sequence.join(' ');
+    numberSequenceElement.innerHTML = ''; // Clear previous sequence
+    sequence.forEach(number => {
+        const span = document.createElement('span');
+        span.textContent = number;
+        numberSequenceElement.appendChild(span);
+    });
 }
 
 function shuffleArray(array) {
@@ -42,14 +46,10 @@ function createButtons() {
 }
 
 function startGame() {
-    if (document.getElementById('start-button').disabled) {
-        // Tombol "Mulai Game" diklik setelah permainan selesai, reset skor
-        score = 0;
-        document.getElementById('score').textContent = 'Score: ' + score;
-    }
-
     document.getElementById('start-button').style.display = 'none'; // Sembunyikan tombol "Mulai Game"
-    generateSequence(5); // Ganti 5 dengan jumlah angka yang diinginkan
+    document.getElementById('button-container').style.display = 'grid'; // Tampilkan button-container
+    document.getElementById('number-sequence').classList.add('show-border'); // Show border
+    generateSequence(6); // Generate 5 numbers for the sequence
     displaySequence();
     createButtons();
     currentIndex = 0;
@@ -57,20 +57,18 @@ function startGame() {
     document.getElementById('score').textContent = 'Score: ' + score;
     document.getElementById('guide').textContent = '';
 
-    // Memulai timer hanya jika belum dimulai sebelumnya
-    if (!timer) {
-        timeLeft = 15;
-        document.getElementById('timer-countdown').textContent = timeLeft;
-        timer = setInterval(() => {
-            timeLeft--;
-            document.getElementById('timer-countdown').textContent = timeLeft; // Update tampilan timer
-            if (timeLeft <= 0) {
-                endGame();
-            }
-        }, 1000);
-    }
+    // Reset and start timer
+    timeLeft = 20;
+    document.getElementById('timer-countdown').textContent = timeLeft;
+    if (timer) clearInterval(timer); // Clear any existing timer
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer-countdown').textContent = timeLeft; // Update tampilan timer
+        if (timeLeft <= 0) {
+            endGame();
+        }
+    }, 1000);
 }
-
 
 function checkNumber(button, number) {
     if (button.classList.contains('clicked')) {
@@ -85,7 +83,7 @@ function checkNumber(button, number) {
             score += 100; // Tambah skor jika urutan benar
             document.getElementById('score').textContent = 'Score: ' + score; // Update tampilan skor
             if (score % 500 === 0) { // Periksa apakah skor adalah kelipatan dari 500
-                timeLeft += 15; // Tambahkan 20 detik ke timer
+                timeLeft += 20; // Tambahkan 15 detik ke timer
                 document.getElementById('timer-countdown').textContent = timeLeft; // Update tampilan timer
             }
             document.getElementById('start-button').disabled = false;
@@ -113,14 +111,11 @@ function checkNumber(button, number) {
     }
 }
 
-
-
 function endGame() {
     clearInterval(timer); // Hentikan timer
     timer = null; // Set timer kembali ke null
-    // setTimeout(() => {
-    //     document.getElementById('message').textContent = 'Game Over!';
-    // }, 1000); // Waktu tunggu sebelum menampilkan pesan (dalam milidetik)
+    document.getElementById('message').textContent = 'Game Over!';
+    document.getElementById('number-sequence').classList.remove('show-border'); // Hide border
     document.getElementById('restart-button').style.display = 'block'; // Tampilkan kembali tombol "Restart Game"
     document.getElementById('restart-button').classList.add('centered'); // Posisikan tombol ke tengah
     // Menghapus atribut disabled dari tombol "Mulai Game"

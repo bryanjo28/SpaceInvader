@@ -1,107 +1,187 @@
 /* CSS */
 body {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 /* Styles untuk container utama */
 #container {
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  /* Styles untuk judul game */
-  h1 {
-    font-size: 2em;
-    color: #333;
-  }
-  
-  /* Styles untuk timer */
-  #timer {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-  }
-  
-  /* Styles untuk urutan angka */
-  #number-sequence {
-    font-size: 2em;
-    margin-bottom: 20px;
-  }
-  
-  /* Styles untuk tombol urutan angka */
-  .number-button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 1.2em;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    margin: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .number-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Styles untuk tombol mulai dan restart game */
-  #start-button, #restart-button {
-    display: block;
-    margin: auto;
-    padding: 10px 20px;
-    font-size: 1.2em;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px;
-  }
-  
-  #start-button:hover, #restart-button:hover {
-    background-color: #218838;
-  }
-  
-  /* Styles untuk skor */
-  #score {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-  }
-  
-  /* Styles untuk pesan */
-  #message {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #dc3545;
-    margin-top: 20px;
-  }
-  
-  /* Styles untuk petunjuk bermain */
-  #guide {
-    font-size: 1em;
-    margin-top: 20px;
-    color: #6c757d;
-  }
-  
-  /* Styles untuk container tombol */
-  #button-container {
-    margin-bottom: 20px;
-  }
-  
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Styles untuk judul game */
+h1 {
+  font-size: 2em;
+  color: #333;
+}
+
+/* Styles untuk timer */
+#timer {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+#timer-countdown {
+  font-weight: bold;
+}
+
+/* Styling for horizontal timer line */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.header img {
+  width: 50px;
+  height: 50px;
+}
+
+.header div {
+  display: flex;
+  align-items: center;
+}
+
+.header div span {
+  font-size: 20px;
+}
+
+/* Styles untuk skor */
+#score {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+
+/* Styles untuk urutan angka */
+#number-sequence {
+  font-size: 2em;
+  font-weight: bold;
+  padding: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Adjust the gap value as needed */
+
+}
+
+#number-sequence span {
+  margin: 0 5px; /* Adjust the margin value as needed */
+}
+
+.show-border {
+  border: #fff solid 5px;
+}
+/* Styles untuk tombol urutan angka
+.number-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.number-button:hover {
+  background-color: #0056b3;
+} */
+
+/* Styles untuk tombol urutan angka */
+.number-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1.5em;
+  background-color: #2FCDD0;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  margin: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.number-button:hover {
+  background-color: #0056b3;
+}
+/* Grid container for number buttons */
+#button-container {
+  display: none; /* Hide initially */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+/* Styles untuk tombol mulai dan restart game */
+#start-button,
+#restart-button {
+  display: block;
+  margin: auto;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+#start-button:hover,
+#restart-button:hover {
+  background-color: #218838;
+}
+
+
+/* Styles untuk pesan */
+#message {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #dc3545;
+  margin-top: 20px;
+}
+
+/* Styles untuk petunjuk bermain */
+#guide {
+  font-size: 1em;
+  margin-top: 20px;
+  color: black;
+  font-weight: bold;
+}
+
+/* Styles untuk container tombol */
+#button-container {
+  margin-bottom: 20px;
+}
+
 
 /* Efek hover */
 .number-button:hover:not(.clicked) {
-    background-color: #00ff00; /* Warna latar belakang hijau saat dihover */
+  background-color: #00ff00;
+  /* Warna latar belakang hijau saat dihover */
 }
 
 /* Tombol yang sudah diklik */
 .number-button.clicked {
-    background-color: #00ff00; /* Warna latar belakang hijau */
+  background-color: #00ff00;
+  /* Warna latar belakang hijau */
 }
 
 /* Klik hanya berlaku untuk tombol yang belum diklik */
 .number-button:not(.clicked):active {
-    background-color: #ffffff; /* Kembali ke warna latar belakang default saat diklik */
+  background-color: #ffffff;
+  /* Kembali ke warna latar belakang default saat diklik */
 }
