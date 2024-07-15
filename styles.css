@@ -1,76 +1,88 @@
 body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 canvas {
-    display: block;
-    margin: 0 auto;
-    background-color: #f0f0f0;
+  display: block;
+  margin: 0 auto;
+  background-color: #f0f0f0;
 }
 
 #gameCanvas {
-    background-image: url('background3.png');
-    background-size: cover;
+  background-image: url('background3.png');
+  background-size: cover;
 }
+
 /* style.css */
 
 /* Game over dialog */
-.dialog {
-    display: none; /* Hide the dialog initially */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
-    text-align: center;
+#gameOverDialog {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
+#gameOverDialog img {
+  width: 200px;
+  /* Limit the maximum width */
+  height: auto;
+}
+
+
 .dialog p {
-    font-size: 24px;
-    margin-bottom: 20px;
+  font-size: 24px;
+  margin-top: 0px;
+  margin-bottom: 10px;
 }
 
 .dialog button {
-    background-color: #0095DD;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 18px;
+  background-color: #0095DD;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
 }
 
 .dialog button:hover {
-    background-color: #0077BB;
+  background-color: #0077BB;
 }
 
 .life-icon {
-    display: inline-block;
-    width: 50px; /* Adjust width and height as needed */
-    height: 40px;
-    background-image: url('heart.png'); /* Use heart.png as background image */
-    background-size: cover;; /* Add margin for spacing */
-    margin-top: 10px;
-    padding-top: 25px;
+  display: inline-block;
+  width: 50px;
+  /* Adjust width and height as needed */
+  height: 40px;
+  background-image: url('heart.png');
+  /* Use heart.png as background image */
+  background-size: cover;
+  ;
+  /* Add margin for spacing */
+  margin-top: 10px;
+  padding-top: 25px;
 }
 
- /* Additional CSS to center the score */
- #scoreContainer {
-    position: fixed;
-    z-index: 10;
-    color: black;
-    left: 50%;
-    top: 35px;
-    margin: 0;
-    font-family: sans-serif;
-    font-size: 18px;
-    font-weight: bold;
-    transform: translateX(-50%);
+/* Additional CSS to center the score */
+#scoreContainer {
+  position: fixed;
+  z-index: 10;
+  color: black;
+  left: 50%;
+  top: 35px;
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  transform: translateX(-50%);
 }
 
 
