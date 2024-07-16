@@ -88,37 +88,41 @@ let touchStartX = null;
 
 // Event listener for handling player movement by holding and swiping touch
 canvas.addEventListener("touchstart", (event) => {
-    touchStartX = event.touches[0].clientX; // Save initial touch position
+    const touchX = event.touches[0].clientX;
+    player.x = touchX - player.width / 2;
+    // touchStartX = event.touches[0].clientX; // Save initial touch position
 });
 
 canvas.addEventListener("touchmove", (event) => {
+    const touchX = event.touches[0].clientX;
+    player.x = touchX - player.width / 2;
     // Only continue if there is an initial touch position
-    if (touchStartX !== null) {
-        // Calculate the change in finger position compared to the initial touch position
-        const touchMoveX = event.touches[0].clientX;
-        const touchDeltaX = touchMoveX - touchStartX;
+    // if (touchStartX !== null) {
+    //     // Calculate the change in finger position compared to the initial touch position
+    //     const touchMoveX = event.touches[0].clientX;
+    //     const touchDeltaX = touchMoveX - touchStartX;
 
-        // Adjust player position based on change in finger position
-        if (touchDeltaX > 0) {
-            // Move to the right
-            rightPressed = true;
-            leftPressed = false;
-        } else {
-            // Move to the left
-            leftPressed = true;
-            rightPressed = false;
-        }
-    }
+    //     // Adjust player position based on change in finger position
+    //     if (touchDeltaX > 0) {
+    //         // Move to the right
+    //         rightPressed = true;
+    //         leftPressed = false;
+    //     } else {
+    //         // Move to the left
+    //         leftPressed = true;
+    //         rightPressed = false;
+    //     }
+    // }
 });
 
 // Event listener to stop movement when the screen is released
 canvas.addEventListener("touchend", () => {
     // Reset movement variables when the screen is released
-    leftPressed = false;
-    rightPressed = false;
+    // leftPressed = false;
+    // rightPressed = false;
 
-    // Reset initial touch position
-    touchStartX = null;
+    // // Reset initial touch position
+    // touchStartX = null;
 });
 
 // Generate a random circle
