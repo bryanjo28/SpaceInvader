@@ -215,12 +215,12 @@ body {
   -ms-transform: rotateY(0deg);
   -o-transform: rotateY(0deg);
   transform: rotateY(0deg);
-  background-color: #e12d00;
+  background-color: white;
   border-radius: 5%;
-  background-image: url(../images/card.svg);
+  background-image: url(../images/questions.png);
   background-position:50% 50%;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
 
 }
 
@@ -231,7 +231,7 @@ body {
   -ms-transform: rotateY(-180deg);
   -o-transform: rotateY(-180deg);
   transform: rotateY(-180deg);
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 5%;
   background-position:50% 50%;
   background-repeat: no-repeat;
@@ -242,33 +242,33 @@ body {
   background-image: url(../images/cards/bluedebit.png);
 }
 .back.card-2 {
-  background-image: url(../images/fruits/fig.jpg);
+  background-image: url(../images/cards/golddebit.png);
 }
 .back.card-3 {
-  background-image: url(../images/fruits/grape.jpg);
+  background-image: url(../images/cards/platdebit.png);
 }
 .back.card-4 {
-  background-image: url(../images/fruits/kiwi.jpg);
+  background-image: url(../images/cards/visablack.jpg);
 }
 .back.card-5 {
-  background-image: url(../images/fruits/lemon.jpg);
+  background-image: url(../images/cards/bcaeveryday.png);
 }
 .back.card-6 {
-  background-image: url(../images/fruits/lime.jpg);
+  background-image: url(../images/cards/visabatman.png);
 }
 .back.card-7 {
-  background-image: url(../images/fruits/mango.jpg);
+  background-image: url(../images/cards/blibli.png);
 }
 .back.card-8 {
-  background-image: url(../images/fruits/melon.jpg);
+  background-image: url(../images/cards/unionpay.png);
 }
 .back.card-9 {
-  background-image: url(../images/fruits/orange.jpg);
+  background-image: url(../images/cards/JCBlack.png);
 }
 .back.card-10 {
-  background-image: url(../images/fruits/peach.jpg);
+  background-image: url(../images/cards/platkredit.png);
 }
-.back.card-11 {
+/* .back.card-11 {
   background-image: url(../images/fruits/pear.jpg);
 }
 .back.card-12 {
@@ -282,7 +282,7 @@ body {
 }
 .back.card-15 {
   background-image: url(../images/fruits/strawberry.jpg);
-}
+} */
 
 /** Matching Cards **/
 /**
