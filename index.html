@@ -2,193 +2,136 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matching Game</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Jigsaw Puzzle Game</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		#puzzle-container {
+			width: 400px;
+			height: 400px;
+			position: relative;
+			border: 2px solid #333;
+			display: flex;
+			flex-wrap: wrap;
+			background-color: #f0f0f0;
+		}
+
+		.puzzle-piece {
+			width: 100px;
+			height: 100px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+			position: absolute;
+			cursor: pointer;
+			background-size: 400px 400px;
+			clip-path: path("M 0 0 L 100 0 Q 90 50 100 100 L 0 100 Q 10 50 0 0 Z");
+		}
+
+		.puzzle-piece:nth-child(odd) {
+			clip-path: path("M 0 0 L 100 0 Q 50 10 100 100 L 0 100 Q 50 90 0 0 Z");
+		}
+
+		.puzzle-clue {
+			width: 100px;
+			height: 100px;
+			border: 1px dashed #888;
+			box-sizing: border-box;
+			position: absolute;
+			background-size: 400px 400px;
+			opacity: 0.5;
+			pointer-events: none;
+		}
+	</style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="scoreboard">
-        <div class="score">Score: <span id="score">0</span></div>
-        <div class="lives">
-            Lives: 
-            <i class="fas fa-heart"></i>
-            <i class="fas fa-heart"></i>
-            <i class="fas fa-heart"></i>
-        </div>
-    </div>
-    <div class="game-area">
-        <div class="images"></div>
-        <div class="words"></div>
-    </div>
-    <div class="message"></div>
-</div>
+	<h1>Jigsaw Puzzle Game</h1>
+	<div id="puzzle-container"></div>
+	<script>
+		const PUZZLE_SIZE = 400;
+		const PIECE_SIZE = 100;
 
-  <script>
-    const imageWords = [
-      { src: 'images/Armand.jpg', word: 'Armand Hartono' },
-      { src: 'images/frengky.jpg', word: 'Frengky Chandra Kusuma' },
-      { src: 'images/Santoso.jpg', word: 'Santoso' },
-      { src: 'images/liana.jpg', word: 'Lianawaty Suwono' },
-      { src: 'images/jahja.jpg', word: 'Jahja Setiaatmadja' }
-    ];
+		window.onload = function () {
+			const puzzleContainer = document.getElementById('puzzle-container');
+			const pieces = [];
 
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
+			// Create puzzle clues
+			for (let row = 0; row < 4; row++) {
+				for (let col = 0; col < 4; col++) {
+					const clue = document.createElement('div');
+					clue.className = 'puzzle-clue';
+					clue.style.backgroundImage = 'url("./images/direksiBca.jpg")';
+					clue.style.backgroundPosition = `-${col * PIECE_SIZE}px -${row * PIECE_SIZE}px`;
+					clue.style.top = `${row * PIECE_SIZE}px`;
+					clue.style.left = `${col * PIECE_SIZE}px`;
+					puzzleContainer.appendChild(clue);
+				}
+			}
 
-    let score = 0;
-    let lives = 3;
+			// Create puzzle pieces
+			for (let row = 0; row < 4; row++) {
+				for (let col = 0; col < 4; col++) {
+					const piece = document.createElement('div');
+					piece.className = 'puzzle-piece';
+					piece.style.backgroundImage = 'url("./images/direksiBca.jpg")';
+					piece.style.backgroundPosition = `-${col * PIECE_SIZE}px -${row * PIECE_SIZE}px`;
 
-    function createGame() {
-      const shuffledImages = shuffle([...imageWords]);
-      const shuffledWords = shuffle([...imageWords]);
+					// Place pieces outside the puzzle container initially
+					piece.style.top = `${PUZZLE_SIZE + Math.random() * (window.innerHeight - PIECE_SIZE)}px`;
+					piece.style.left = `${Math.random() * (window.innerWidth - PIECE_SIZE)}px`;
 
-      const imagesContainer = document.querySelector('.images');
-      const wordsContainer = document.querySelector('.words');
+					piece.dataset.correctLeft = col * PIECE_SIZE;
+					piece.dataset.correctTop = row * PIECE_SIZE;
 
-      shuffledImages.forEach(item => {
-        const img = document.createElement('img');
-        img.src = item.src;
-        img.alt = item.word;
-        img.dataset.word = item.word;
-        imagesContainer.appendChild(img);
-      });
+					piece.addEventListener('mousedown', onPieceMouseDown);
 
-      shuffledWords.forEach(item => {
-        const div = document.createElement('div');
-        div.textContent = item.word;
-        div.dataset.word = item.word;
-        wordsContainer.appendChild(div);
-      });
+					pieces.push(piece);
+					document.body.appendChild(piece);
+				}
+			}
 
-      addEventListeners();
-    }
+			function onPieceMouseDown(event) {
+				const piece = event.target;
+				const offsetX = event.clientX - piece.getBoundingClientRect().left;
+				const offsetY = event.clientY - piece.getBoundingClientRect().top;
 
-    function updateScoreboard() {
-      document.getElementById('score').textContent = score;
-      const livesContainer = document.querySelector('.lives');
-      livesContainer.innerHTML = 'Lives: ';
-      for (let i = 0; i < lives; i++) {
-        const heart = document.createElement('i');
-        heart.classList.add('fas', 'fa-heart');
-        livesContainer.appendChild(heart);
-      }
-    }
+				function onMouseMove(event) {
+					piece.style.left = `${event.clientX - offsetX}px`;
+					piece.style.top = `${event.clientY - offsetY}px`;
+				}
 
-    function addEventListeners() {
-      let selectedImage = null;
-      let selectedWord = null;
+				function onMouseUp() {
+					document.removeEventListener('mousemove', onMouseMove);
+					document.removeEventListener('mouseup', onMouseUp);
 
-      document.querySelectorAll('.images img').forEach(img => {
-        img.addEventListener('click', function () {
-          if (this.classList.contains('matched')) return;
-          if (selectedImage) {
-            selectedImage.classList.remove('selected');
-          }
-          selectedImage = this;
-          selectedImage.classList.add('selected');
-          checkMatch();
-        });
-      });
+					const left = Math.round(parseInt(piece.style.left) / PIECE_SIZE) * PIECE_SIZE;
+					const top = Math.round(parseInt(piece.style.top) / PIECE_SIZE) * PIECE_SIZE;
 
-      document.querySelectorAll('.words div').forEach(word => {
-        word.addEventListener('click', function () {
-          if (this.classList.contains('matched')) return;
-          if (selectedWord) {
-            selectedWord.classList.remove('selected');
-          }
-          selectedWord = this;
-          selectedWord.classList.add('selected');
-          checkMatch();
-        });
-      });
+					if (left === parseInt(piece.dataset.correctLeft) && top === parseInt(piece.dataset.correctTop)) {
+						piece.style.left = `${left}px`;
+						piece.style.top = `${top}px`;
+						piece.style.border = '1px solid green';
+					} else {
+						piece.style.left = `${PUZZLE_SIZE + Math.random() * (window.innerHeight - PIECE_SIZE)}px`;
+						piece.style.top = `${Math.random() * (window.innerWidth - PIECE_SIZE)}px`;
+					}
+				}
 
-      function checkMatch() {
-        const message = document.querySelector('.message');
-        if (selectedImage && selectedWord) {
-          if (selectedImage.dataset.word === selectedWord.dataset.word) {
-            message.innerHTML = '<i class="fas fa-check-circle" style="color: green;"></i>';
-            selectedImage.classList.add('matched');
-            selectedWord.classList.add('matched');
-            drawLine(selectedImage, selectedWord);
-            score += 20;
-          } else {
-            message.innerHTML = '<i class="fas fa-times-circle" style="color: red;"></i>';
-            lives -= 1;
-            if (lives === 0) {
-              alert('Game Over!');
-              resetGame();
-              return;
-            }
-          }
-          updateScoreboard();
-          selectedImage.classList.remove('selected');
-          selectedWord.classList.remove('selected');
-          selectedImage = null;
-          selectedWord = null;
-        }
-      }
-
-      function drawLine(image, word) {
-        const container = document.querySelector('.container');
-        const line = document.createElement('div');
-        line.classList.add('line');
-        line.classList.add('matched');
-
-        const imgRect = image.getBoundingClientRect();
-        const wordRect = word.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-
-        let x1, y1, x2, y2;
-
-        if (window.innerWidth <= 599) { // Mobile view
-          x1 = imgRect.right - containerRect.left;
-          y1 = imgRect.top + imgRect.height / 2 - containerRect.top;
-          x2 = wordRect.left - containerRect.left;
-          y2 = wordRect.top + wordRect.height / 2 - containerRect.top;
-        } else { // Laptop view
-          x1 = imgRect.left + imgRect.width / 2 - containerRect.left;
-          y1 = imgRect.bottom - containerRect.top;
-          x2 = wordRect.left + wordRect.width / 2 - containerRect.left;
-          y2 = wordRect.top - containerRect.top;
-        }
-
-        const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-        const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
-
-        line.style.width = `${length}px`;
-        line.style.transform = `rotate(${angle}deg)`;
-        line.style.top = `${y1}px`;
-        line.style.left = `${x1}px`;
-
-        container.appendChild(line);
-      }
-    }
-
-    function resetGame() {
-      score = 0;
-      lives = 3;
-      document.querySelector('.images').innerHTML = '';
-      document.querySelector('.words').innerHTML = '';
-      document.querySelector('.message').innerHTML = '';
-      document.querySelectorAll('.line').forEach(line => line.remove());
-      createGame();
-      updateScoreboard();
-    }
-
-    createGame();
-    updateScoreboard();
-
-
-  </script>
+				document.addEventListener('mousemove', onMouseMove);
+				document.addEventListener('mouseup', onMouseUp);
+			}
+		}
+	</script>
 </body>
 
 </html>
