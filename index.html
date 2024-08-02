@@ -1,48 +1,26 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>BCA CARD MATCHER</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="js/MemoryGame.js" type="text/javascript"></script>
-    <script src="js/Card.js" type="text/javascript"></script>
-    <link href="css/MemoryGame.css" type="text/css" rel="stylesheet" />
-  </head>
-  <body>
-    <section id="memory--settings-modal" class="valign-table modal show">
-      <div class="valign-cell">
-        <form>
-          <h2 class="memory--settings-label">Difficulty level:</h2>
-          <select id="memory--settings-grid">
-            <option value="2x3">Easy</option>
-            <option value="3x4" selected>Medium</option>
-            <option value="4x5">Hard</option>
-            <!-- <option value="5x6">Don't do it!</option> -->
-          </select>
-          <input id="memory--settings-reset" type="submit" value="Start New Game" />
-        </form>
-      </div>
-    </section>
-    <section id="memory--end-game-modal" class="valign-table modal">
-      <div class="valign-cell">
-        <div class="wrapper">
-          <h2 id="memory--end-game-message"></h2>
-          <h3 id="memory--end-game-score"></h3>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container d-flex vh-100 align-items-center justify-content-center">
+        <div id="quiz-container" class="card shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="card-header text-center bg-primary text-white">
+                <h2>BCA Quiz Game</h2>
+                <div id="timer" class="text-right text-white">Time: 120s</div>
+                <div id="score" class="text-left text-white">Score: 0</div>
+            </div>
+            <div class="card-body">
+                <div id="question-container" class="mb-4"></div>
+                <div id="answer-buttons" class="btn-group-vertical w-100"></div>
+            </div>
         </div>
-      </div>
-    </section>
-    <section id="memory--app-container">
-      <ul id="memory--cards">
-      </ul>
-    </section>
-    <section class="memory--menu-bar">
-      <div class="inner">
-        <div class="left"><h1 class="memory--app-name">BCA CARD MATCHER</h1></div>
-        <div class="right">
-          <a href="#settings"><img id="memory--settings-icon" src="images/gear.png" /></a>
-        </div>
-      </div>
-    </section>
-    <script src="js/BrowserInterface.js" type="text/javascript"></script>
-  </body>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>

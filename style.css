@@ -1,0 +1,12 @@
+body {
+    background-color: #f8f9fa;
+}
+
+#quiz-container {
+    max-width: 600px;
+    width: 100%;
+}
+
+#timer, #score {
+    font-size: 1.25rem;
+}
