@@ -1,194 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matching Game</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Racing Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  <div class="container">
-    <div class="scoreboard">
-        <div class="score">Score: <span id="score">0</span></div>
-        <div class="lives">
-            Lives: 
-            <i class="fas fa-heart"></i>
-            <i class="fas fa-heart"></i>
-            <i class="fas fa-heart"></i>
+    <div id="game-container" class="d-flex justify-content-center align-items-center">
+        <div id="road">
+            <img id="car" src="car.png" alt="Car">
+            <div class="obstacle"></div>
+            <div class="obstacle"></div>
+        </div>
+        <div id="info-container" class="d-flex justify-content-between align-items-center">
+            <div id="score" class="ml-3">Score: 0</div>
+            <div id="time" class="mx-auto">Time: 60s</div>
+            <div id="lives" class="mr-3">
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+            </div>
         </div>
     </div>
-    <div class="game-area">
-        <div class="images"></div>
-        <div class="words"></div>
+    <div id="game-over-dialog" class="dialog">
+        <div class="dialog-content">
+            <h2>Game Over</h2>
+            <p>Your final score is: <span id="final-score"></span></p>
+            <button id="restart-button" class="btn btn-primary">Restart</button>
+        </div>
     </div>
-    <div class="message"></div>
-</div>
-
-  <script>
-    const imageWords = [
-      { src: 'images/Armand.jpg', word: 'Armand Hartono' },
-      { src: 'images/frengky.jpg', word: 'Frengky Chandra Kusuma' },
-      { src: 'images/Santoso.jpg', word: 'Santoso' },
-      { src: 'images/liana.jpg', word: 'Lianawaty Suwono' },
-      { src: 'images/jahja.jpg', word: 'Jahja Setiaatmadja' }
-    ];
-
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
-
-    let score = 0;
-    let lives = 3;
-
-    function createGame() {
-      const shuffledImages = shuffle([...imageWords]);
-      const shuffledWords = shuffle([...imageWords]);
-
-      const imagesContainer = document.querySelector('.images');
-      const wordsContainer = document.querySelector('.words');
-
-      shuffledImages.forEach(item => {
-        const img = document.createElement('img');
-        img.src = item.src;
-        img.alt = item.word;
-        img.dataset.word = item.word;
-        imagesContainer.appendChild(img);
-      });
-
-      shuffledWords.forEach(item => {
-        const div = document.createElement('div');
-        div.textContent = item.word;
-        div.dataset.word = item.word;
-        wordsContainer.appendChild(div);
-      });
-
-      addEventListeners();
-    }
-
-    function updateScoreboard() {
-      document.getElementById('score').textContent = score;
-      const livesContainer = document.querySelector('.lives');
-      livesContainer.innerHTML = 'Lives: ';
-      for (let i = 0; i < lives; i++) {
-        const heart = document.createElement('i');
-        heart.classList.add('fas', 'fa-heart');
-        livesContainer.appendChild(heart);
-      }
-    }
-
-    function addEventListeners() {
-      let selectedImage = null;
-      let selectedWord = null;
-
-      document.querySelectorAll('.images img').forEach(img => {
-        img.addEventListener('click', function () {
-          if (this.classList.contains('matched')) return;
-          if (selectedImage) {
-            selectedImage.classList.remove('selected');
-          }
-          selectedImage = this;
-          selectedImage.classList.add('selected');
-          checkMatch();
-        });
-      });
-
-      document.querySelectorAll('.words div').forEach(word => {
-        word.addEventListener('click', function () {
-          if (this.classList.contains('matched')) return;
-          if (selectedWord) {
-            selectedWord.classList.remove('selected');
-          }
-          selectedWord = this;
-          selectedWord.classList.add('selected');
-          checkMatch();
-        });
-      });
-
-      function checkMatch() {
-        const message = document.querySelector('.message');
-        if (selectedImage && selectedWord) {
-          if (selectedImage.dataset.word === selectedWord.dataset.word) {
-            message.innerHTML = '<i class="fas fa-check-circle" style="color: green;"></i>';
-            selectedImage.classList.add('matched');
-            selectedWord.classList.add('matched');
-            drawLine(selectedImage, selectedWord);
-            score += 20;
-          } else {
-            message.innerHTML = '<i class="fas fa-times-circle" style="color: red;"></i>';
-            lives -= 1;
-            if (lives === 0) {
-              alert('Game Over!');
-              resetGame();
-              return;
-            }
-          }
-          updateScoreboard();
-          selectedImage.classList.remove('selected');
-          selectedWord.classList.remove('selected');
-          selectedImage = null;
-          selectedWord = null;
-        }
-      }
-
-      function drawLine(image, word) {
-        const container = document.querySelector('.container');
-        const line = document.createElement('div');
-        line.classList.add('line');
-        line.classList.add('matched');
-
-        const imgRect = image.getBoundingClientRect();
-        const wordRect = word.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-
-        let x1, y1, x2, y2;
-
-        if (window.innerWidth <= 599) { // Mobile view
-          x1 = imgRect.right - containerRect.left;
-          y1 = imgRect.top + imgRect.height / 2 - containerRect.top;
-          x2 = wordRect.left - containerRect.left;
-          y2 = wordRect.top + wordRect.height / 2 - containerRect.top;
-        } else { // Laptop view
-          x1 = imgRect.left + imgRect.width / 2 - containerRect.left;
-          y1 = imgRect.bottom - containerRect.top;
-          x2 = wordRect.left + wordRect.width / 2 - containerRect.left;
-          y2 = wordRect.top - containerRect.top;
-        }
-
-        const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-        const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
-
-        line.style.width = `${length}px`;
-        line.style.transform = `rotate(${angle}deg)`;
-        line.style.top = `${y1}px`;
-        line.style.left = `${x1}px`;
-
-        container.appendChild(line);
-      }
-    }
-
-    function resetGame() {
-      score = 0;
-      lives = 3;
-      document.querySelector('.images').innerHTML = '';
-      document.querySelector('.words').innerHTML = '';
-      document.querySelector('.message').innerHTML = '';
-      document.querySelectorAll('.line').forEach(line => line.remove());
-      createGame();
-      updateScoreboard();
-    }
-
-    createGame();
-    updateScoreboard();
-
-
-  </script>
+    <script src="game.js"></script>
 </body>
-
 </html>
