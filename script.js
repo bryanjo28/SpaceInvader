@@ -1,3 +1,8 @@
+// Leap Motion Controller setup
+const controller = new Leap.Controller();
+
+controller.connect();
+
 // Get the canvas and its context
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -16,7 +21,6 @@ const player = {
     width: 140,
     height: 150,
     speed: 5
-    
 };
 
 // Circles array
@@ -74,7 +78,7 @@ function keyUpHandler(event) {
     }
 }
 
-// Update player position
+// Update player position based on keyboard input
 function updatePlayer() {
     if (rightPressed && player.x < canvas.width - player.width) {
         player.x += player.speed;
@@ -83,6 +87,20 @@ function updatePlayer() {
     }
 }
 
+// Leap Motion frame listener for controlling the player with hand movement
+controller.on('frame', function(frame) {
+    if (frame.hands.length > 0) {
+        const hand = frame.hands[0];
+        const handPosition = hand.palmPosition;
+        
+        // Map Leap Motion hand position to canvas player position
+        const canvasX = (handPosition[0] / 200) * canvas.width + canvas.width / 2;
+        
+        // Update player position based on hand movement
+        player.x = canvasX - player.width / 2;
+    }
+});
+
 // Variable for storing initial touch position
 let touchStartX = null;
 
@@ -90,39 +108,11 @@ let touchStartX = null;
 canvas.addEventListener("touchstart", (event) => {
     const touchX = event.touches[0].clientX;
     player.x = touchX - player.width / 2;
-    // touchStartX = event.touches[0].clientX; // Save initial touch position
 });
 
 canvas.addEventListener("touchmove", (event) => {
     const touchX = event.touches[0].clientX;
     player.x = touchX - player.width / 2;
-    // Only continue if there is an initial touch position
-    // if (touchStartX !== null) {
-    //     // Calculate the change in finger position compared to the initial touch position
-    //     const touchMoveX = event.touches[0].clientX;
-    //     const touchDeltaX = touchMoveX - touchStartX;
-
-    //     // Adjust player position based on change in finger position
-    //     if (touchDeltaX > 0) {
-    //         // Move to the right
-    //         rightPressed = true;
-    //         leftPressed = false;
-    //     } else {
-    //         // Move to the left
-    //         leftPressed = true;
-    //         rightPressed = false;
-    //     }
-    // }
-});
-
-// Event listener to stop movement when the screen is released
-canvas.addEventListener("touchend", () => {
-    // Reset movement variables when the screen is released
-    // leftPressed = false;
-    // rightPressed = false;
-
-    // // Reset initial touch position
-    // touchStartX = null;
 });
 
 // Generate a random circle
