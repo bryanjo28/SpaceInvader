@@ -8,6 +8,8 @@ body {
 canvas {
   display: block;
   margin: 0 auto;
+  width: 100vw; /* Use full viewport width */
+  height: 100vh; /* Use full viewport height */
   background-color: #f0f0f0;
 }
 
@@ -15,8 +17,6 @@ canvas {
   background-image: url('background3.png');
   background-size: cover;
 }
-
-/* style.css */
 
 /* Game over dialog */
 #gameOverDialog {
@@ -35,7 +35,6 @@ canvas {
   /* Limit the maximum width */
   height: auto;
 }
-
 
 .dialog p {
   font-size: 24px;
@@ -62,16 +61,9 @@ canvas {
   width: 50px;
   /* Adjust width and height as needed */
   height: 40px;
-  background-image: url('heart.png');
-  /* Use heart.png as background image */
-  background-size: cover;
-  ;
-  /* Add margin for spacing */
   margin-top: 10px;
-  padding-top: 25px;
 }
 
-/* Additional CSS to center the score */
 #scoreContainer {
   position: fixed;
   z-index: 10;
@@ -85,29 +77,25 @@ canvas {
   transform: translateX(-50%);
 }
 
-
-/* Additional CSS to center the score */
-#scoreContainer {
-  position: fixed;
-  z-index: 10;
-  color: black;
-  left: 50%;
-  top: 10px;
-  margin: 0;
-  font-family: sans-serif;
-  font-size: 18px;
-  font-weight: bold;
-  transform: translateX(-50%);
-}
-
 #lives {
   position: fixed;
   z-index: 10;
   color: black;
-  top: 0px;
-  right: 0px;
+  top: 10px; /* Beri jarak dari atas */
+  right: 10px; /* Beri jarak dari kanan */
   display: flex;
   align-items: center;
+}
+
+.life-icon {
+  display: inline-block;
+  width: 50px; /* Atur ukuran sesuai kebutuhan */
+  height: 50px; /* Atur ukuran sesuai kebutuhan */
+}
+
+.life-icon img {
+  width: 100%; /* Pastikan gambar memenuhi ikon */
+  height: auto;
 }
 
 .cloud-icon {
