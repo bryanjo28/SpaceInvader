@@ -8,14 +8,14 @@ body {
 canvas {
   display: block;
   margin: 0 auto;
-  width: 100vw; /* Use full viewport width */
-  height: 100vh; /* Use full viewport height */
   background-color: #f0f0f0;
 }
 
 #gameCanvas {
   background-image: url('background3.png');
   background-size: cover;
+  width: 100vw;
+  height: 100vh;
 }
 
 /* Game over dialog */
@@ -28,11 +28,12 @@ canvas {
   padding: 20px;
   text-align: center;
   margin-bottom: 40px;
+  background-color: white;
+  border-radius: 10px;
 }
 
 #gameOverDialog img {
   width: 200px;
-  /* Limit the maximum width */
   height: auto;
 }
 
@@ -56,20 +57,12 @@ canvas {
   background-color: #0077BB;
 }
 
-.life-icon {
-  display: inline-block;
-  width: 50px;
-  /* Adjust width and height as needed */
-  height: 40px;
-  margin-top: 10px;
-}
-
 #scoreContainer {
   position: fixed;
   z-index: 10;
   color: black;
   left: 50%;
-  top: 35px;
+  top: 15px;
   margin: 0;
   font-family: sans-serif;
   font-size: 18px;
@@ -80,27 +73,41 @@ canvas {
 #lives {
   position: fixed;
   z-index: 10;
-  color: black;
-  top: 10px; /* Beri jarak dari atas */
-  right: 10px; /* Beri jarak dari kanan */
+  top: 25px;
+  right: 15px;
   display: flex;
   align-items: center;
 }
 
 .life-icon {
   display: inline-block;
-  width: 50px; /* Atur ukuran sesuai kebutuhan */
-  height: 50px; /* Atur ukuran sesuai kebutuhan */
-}
-
-.life-icon img {
-  width: 100%; /* Pastikan gambar memenuhi ikon */
-  height: auto;
+  font-size: 24px; /* Ukuran ikon */
+  color: red;
+  margin-left: 5px;
 }
 
 .cloud-icon {
-  width: 50px;
-  /* Adjust size as needed */
+  width: 40px;
   height: auto;
   margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+  #scoreContainer {
+      font-size: 16px;
+      top: 10px;
+  }
+
+  .life-icon {
+      font-size: 30px; /* Sesuaikan ukuran ikon di perangkat kecil */
+  }
+
+  #gameOverDialog p {
+      font-size: 20px;
+  }
+
+  .dialog button {
+      font-size: 16px;
+      padding: 8px 16px;
+  }
 }

@@ -208,12 +208,19 @@ function updateTimer(deltaTime) {
 }
 
 // Function to update lives display
+// Function to update lives display
 function updateLivesDisplay() {
     livesContainer.innerHTML = '';
     for (let i = 0; i < lives; i++) {
-        livesContainer.innerHTML += '<span class="life-icon"><img src="heart.png" alt="Heart"></span>';
+        const lifeElement = document.createElement('span');
+        lifeElement.classList.add('life-icon');
+        lifeElement.innerHTML = '<i class="fas fa-heart"></i>';
+        livesContainer.appendChild(lifeElement);
     }
 }
+
+updateLivesDisplay(); // Panggil fungsi untuk menampilkan lives di awal
+
 
 updateLivesDisplay(); // Call the function to display initial lives
 

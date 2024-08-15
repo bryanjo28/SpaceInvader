@@ -1,3 +1,9 @@
+// Leap Motion Controller setup
+const controller = new Leap.Controller();
+
+controller.connect();
+
+console.log(controller);
 // Get the canvas and its context
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -30,7 +36,7 @@ const images = [
     { src: 'money2.png', points: 500, spawnRate: 0.07 },
     { src: 'money3.png', points: 200, spawnRate: 0.09 },
     { src: 'money4.png', points: 100, spawnRate: 0.09 },
-    { src: 'bomb2.png', points: -200, spawnRate: 0.08 } 
+    { src: 'bomb2.png', points: -200, spawnRate: 0.08 }
 ];
 
 // Load bomb image
@@ -40,10 +46,6 @@ image2.src = 'bomb2.png';
 // Load the image for the player
 const playerImage = new Image();
 playerImage.src = 'wallet.png';
-
-// Load heart image
-const heartImage = new Image();
-heartImage.src = 'heart.png';
 
 // Sound
 const coinSound = new Audio("/audio/coinsoundmin.mp3");
@@ -81,6 +83,24 @@ function updatePlayer() {
         player.x -= player.speed;
     }
 }
+
+// Leap Motion frame listener for controlling the player with hand movement
+controller.on('frame', function(frame) {
+    if (frame.hands.length > 0) {
+        const hand = frame.hands[0];
+        const handPosition = hand.palmPosition;
+
+        // Map Leap Motion hand position to canvas player position
+        const canvasX = (handPosition[0] / 200) * canvas.width + canvas.width / 2;
+
+        // Update player position based on hand movement
+        player.x = canvasX - player.width / 2;
+
+        // Ensure player does not move out of canvas bounds
+        if (player.x < 0) player.x = 0;
+        if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+    }
+});
 
 // Variable for storing initial touch position
 let touchStartX = null;
@@ -211,7 +231,10 @@ function updateTimer(deltaTime) {
 function updateLivesDisplay() {
     livesContainer.innerHTML = '';
     for (let i = 0; i < lives; i++) {
-        livesContainer.innerHTML += '<span class="life-icon"><img src="heart.png" alt="Heart"></span>';
+        const lifeElement = document.createElement('span');
+        lifeElement.classList.add('life-icon');
+        lifeElement.innerHTML = '<i class="fas fa-heart"></i>';
+        livesContainer.appendChild(lifeElement);
     }
 }
 

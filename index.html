@@ -5,7 +5,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Money Catcher</title>
+	<script src="leap-1.1.1.min.js"></script>
 	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
@@ -19,29 +21,14 @@
 		<span>Score:</span><span id="score">0</span>
 	</div>
 	<div id="lives">
-		<span id="life1" class="life-icon"><img src="heart.png" alt="Heart"></span>
-		<span id="life2" class="life-icon"><img src="heart.png" alt="Heart"></span>
-		<span id="life3" class="life-icon"><img src="heart.png" alt="Heart"></span>
+		<span id="life1" class="life-icon"><i class="fas fa-heart"></i></span>
+		<span id="life2" class="life-icon"><i class="fas fa-heart"></i></span>
+		<span id="life3" class="life-icon"><i class="fas fa-heart"></i></span>
 		<img src="awan.gif" class="cloud-icon" alt="Cloud">
 	</div>
 	<canvas id="gameCanvas"></canvas>
-	<script src="script.js"></script>
+	<script src="script_motion.js"></script>
 	<script src="leap-1.1.1.js"></script>
-	<script src="leap-1.1.1.min.js"></script>
-	<!-- <audio id="myAudio" autoplay loop>
-        <source src="/audio/bgmusic.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio> -->
-
-	<script>
-		// function setVolume(volume) {
-		//     var audio = document.getElementById("myAudio");
-		//     audio.volume = volume;
-		// }
-		// document.addEventListener("DOMContentLoaded", function () {
-		//     setVolume(0.9); // Mengatur volume menjadi 50% saat halaman dimuat
-		// });
-	</script>
 </body>
 
 </html>
